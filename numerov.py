@@ -189,11 +189,11 @@ def main():
         transition_frequency_previous = transition_frequency
 
     # get harmonic frequency from numerov
-    x1, x2, x3, x4, transition_frequency_harmonic = run_numerov(input_data,
-                                                                constants,
-                                                                potential_coef_harmonic,
-                                                                property_coef,
-                                                                q_max)
+    _, _, _, _, transition_frequency_harmonic = run_numerov(input_data,
+                                                            constants,
+                                                            potential_coef_harmonic,
+                                                            property_coef,
+                                                            q_max)
 
     p0 = property_coef[-1] * constants['hartree_to_hz']
     p1 = property_coef[-2] * constants['hartree_to_hz']
