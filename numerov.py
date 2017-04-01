@@ -167,17 +167,15 @@ def main():
     print('nr solutions       =', input_data['num_solutions'])
     print('nr steps           =', input_data['num_steps'])
 
-    transition_frequency_previous = 0.0
-
+    transition_frequency = sys.float_info.max
+    transition_frequency_previous = -sys.float_info.max
     q_max = 0.5
-    while True:
+    while abs(transition_frequency - transition_frequency_previous) > 1.0e-1:
         q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(input_data,
                                                                             constants,
                                                                             pot_energy_coefs,
                                                                             property_coef,
                                                                             q_max)
-        if abs(transition_frequency - transition_frequency_previous) < 1.0e-1:
-            break
         q_max += 0.1
         transition_frequency_previous = transition_frequency
 
