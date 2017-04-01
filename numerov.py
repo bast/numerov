@@ -6,86 +6,6 @@ import numpy
 from optparse import OptionParser
 
 
-version = '1.1.0'
-
-amu_to_au      = 1822.888479031408
-hartree_to_hz  = 6.579683920721e15
-hartree_to_cm1 = 2.194746313705e5
-
-
-usage = '''
-  example: ./%prog --file=CHFClBr_mode3_x2c_b3lyp'''
-
-parser = OptionParser(usage)
-
-parser.add_option('--file',
-                  type='string',
-                  action='store',
-                  default=None,
-                  help='File to parse',
-                  metavar='FILE')
-parser.add_option('--degree_potential',
-                  type='int',
-                  action='store',
-                  default=6)
-parser.add_option('--degree_property',
-                  type='int',
-                  action='store',
-                  default=6)
-parser.add_option('--energy_precision',
-                  type='float',
-                  action='store',
-                  default=1.0e-12)
-parser.add_option('--nr-solutions',
-                  type='int',
-                  action='store',
-                  default=2)
-parser.add_option('--nr-steps',
-                  type='int',
-                  action='store',
-                  default=1000)
-parser.add_option('--to-level',
-                  type='int',
-                  action='store',
-                  default=1)
-
-(options, args) = parser.parse_args()
-
-if len(sys.argv) == 1:
-    # user has given no arguments: print help and exit
-    print parser.format_help().strip()
-    sys.exit()
-
-
-l = []
-
-
-
-with open(options.file, 'r') as stream:
-    try:
-        f = yaml.load(stream)
-    except yaml.YAMLError as e:
-        print(e)
-
-
-harmonic_frequency_cm1 = f['harmonic_frequency_cm1']
-reduced_mass_amu = f['reduced_mass_amu']
-
-l = []
-for step in f['steps']:
-    l.append((step['displacement'], step['potential'], step['property']))
-l.sort()
-
-q_l = []
-potential_l = []
-property_l = []
-for x in l:
-    q_l.append(x[0])
-    potential_l.append(x[1])
-    property_l.append(x[2])
-
-#-------------------------------------------------------------------------------
-
 def run_numerov(potential_coef,
                 property_coef,
                 q_max):
@@ -186,6 +106,87 @@ def run_numerov(potential_coef,
           energy_guess = energy_guess + energy_step
 
     return q, psi_squared, energy, diff_hz, transition_frequency
+
+
+version = '1.1.0'
+
+amu_to_au      = 1822.888479031408
+hartree_to_hz  = 6.579683920721e15
+hartree_to_cm1 = 2.194746313705e5
+
+
+usage = '''
+  example: ./%prog --file=CHFClBr_mode3_x2c_b3lyp'''
+
+parser = OptionParser(usage)
+
+parser.add_option('--file',
+                  type='string',
+                  action='store',
+                  default=None,
+                  help='File to parse',
+                  metavar='FILE')
+parser.add_option('--degree_potential',
+                  type='int',
+                  action='store',
+                  default=6)
+parser.add_option('--degree_property',
+                  type='int',
+                  action='store',
+                  default=6)
+parser.add_option('--energy_precision',
+                  type='float',
+                  action='store',
+                  default=1.0e-12)
+parser.add_option('--nr-solutions',
+                  type='int',
+                  action='store',
+                  default=2)
+parser.add_option('--nr-steps',
+                  type='int',
+                  action='store',
+                  default=1000)
+parser.add_option('--to-level',
+                  type='int',
+                  action='store',
+                  default=1)
+
+(options, args) = parser.parse_args()
+
+if len(sys.argv) == 1:
+    # user has given no arguments: print help and exit
+    print parser.format_help().strip()
+    sys.exit()
+
+
+l = []
+
+
+
+with open(options.file, 'r') as stream:
+    try:
+        f = yaml.load(stream)
+    except yaml.YAMLError as e:
+        print(e)
+
+
+harmonic_frequency_cm1 = f['harmonic_frequency_cm1']
+reduced_mass_amu = f['reduced_mass_amu']
+
+l = []
+for step in f['steps']:
+    l.append((step['displacement'], step['potential'], step['property']))
+l.sort()
+
+q_l = []
+potential_l = []
+property_l = []
+for x in l:
+    q_l.append(x[0])
+    potential_l.append(x[1])
+    property_l.append(x[2])
+
+#-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
 
