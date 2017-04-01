@@ -26,12 +26,6 @@ parser.add_option('--file',
                   default=None,
                   help='File to parse',
                   metavar='FILE')
-parser.add_option('--potential',
-                  type='string',
-                  action='store',
-                  default=None,
-                  help='File to parse',
-                  metavar='FILE')
 parser.add_option('--degree_potential',
                   type='int',
                   action='store',
@@ -64,53 +58,34 @@ if len(sys.argv) == 1:
     print parser.format_help().strip()
     sys.exit()
 
-if options.file:
-    f = open(options.file, 'r')
-    s = f.readlines()
-    f.close()
-
-if options.potential:
-    f = open(options.potential, 'r')
-    s_potential = f.readlines()
-    f.close()
-else:
-    f = open(options.file, 'r')
-    s_potential = f.readlines()
-    f.close()
 
 l = []
-for i in range(len(s_potential)):
-    if 'harmonic_frequency_cm1' in s_potential[i]:
-         harmonic_frequency_cm1 = float(s_potential[i].split()[-1])
-    if 'reduced_mass_amu' in s_potential[i]:
-         reduced_mass_amu = float(s_potential[i].split()[-1])
-    if 'q=' in s_potential[i]:
-         w1 = s_potential[i].split()[0]
-         w2 = s_potential[i].split()[1]
-         q = float(w1.split('=')[-1])
-         v = float(w2.split('=')[-1])
-         l.append((q, v))
+
+
+import yaml
+
+with open(options.file, 'r') as stream:
+    try:
+        f = yaml.load(stream)
+    except yaml.YAMLError as e:
+        print(e)
+
+
+harmonic_frequency_cm1 = f['harmonic_frequency_cm1']
+reduced_mass_amu = f['reduced_mass_amu']
+
+l = []
+for step in f['steps']:
+    l.append((step['displacement'], step['potential'], step['property']))
 l.sort()
 
 q_l = []
 potential_l = []
+property_l = []
 for x in l:
     q_l.append(x[0])
     potential_l.append(x[1])
-
-l = []
-for i in range(len(s)):
-    if 'q=' in s[i]:
-         w1 = s[i].split()[0]
-         w3 = s[i].split()[2]
-         q = float(w1.split('=')[-1])
-         p = float(w3.split('=')[-1])
-         l.append((q, p))
-l.sort()
-
-property_l = []
-for x in l:
-    property_l.append(x[1])
+    property_l.append(x[2])
 
 #-------------------------------------------------------------------------------
 

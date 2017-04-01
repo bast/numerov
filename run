@@ -1,5 +1,5 @@
 #!/bin/bash
 
-python2 numerov.py --potential=example.in --file=example.in > example.out
+python2 numerov.py --file=example.yml > example.out
 
 exit 0
