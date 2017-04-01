@@ -1,7 +1,5 @@
 import yaml
 import sys
-import string
-import os
 import numpy
 
 
@@ -221,7 +219,7 @@ def main():
                                                                                   transition_frequency_harmonic,
                                                                                   q_max)
 
-    plot_file = string.replace(input_file, '.in', '')
+    plot_file = input_file.replace('.in', '')
 
 
 if __name__ == '__main__':
