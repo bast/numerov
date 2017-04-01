@@ -1,0 +1,5 @@
+#!/bin/bash
+
+python2 numerov.py --potential=example.in --file=example.in > example.out
+
+exit 0
