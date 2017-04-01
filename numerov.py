@@ -164,16 +164,16 @@ def main():
             h_y.append(potential_y[i])
     potential_coef_harmonic = numpy.polyfit(h_x, h_y, 2)
 
-    print
-    print 'version            =', version
-    print
-    print 'reduced mass       =', input_data['reduced_mass_amu']
-    print 'harmonic frequency =', input_data['harmonic_frequency_cm1']
-    print 'degree potential   =', input_data['degree_potential']
-    print 'degree property    =', input_data['degree_property']
-    print 'energy precision   =', input_data['energy_precision']
-    print 'nr solutions       =', input_data['num_solutions']
-    print 'nr steps           =', input_data['num_steps']
+    print()
+    print('version            =', version)
+    print()
+    print('reduced mass       =', input_data['reduced_mass_amu'])
+    print('harmonic frequency =', input_data['harmonic_frequency_cm1'])
+    print('degree potential   =', input_data['degree_potential'])
+    print('degree property    =', input_data['degree_property'])
+    print('energy precision   =', input_data['energy_precision'])
+    print('nr solutions       =', input_data['num_solutions'])
+    print('nr steps           =', input_data['num_steps'])
 
     transition_frequency_previous = 0.0
 
@@ -209,15 +209,15 @@ def main():
     delta_2 *= n/(mass*frequency)
     delta_3 *= n/(mass*frequency)
 
-    print
-    print '%12s %10s %10s %10s %10s %10s %10s %7s %7s %4s' % ('p(0)', 'p(1)', 'p(2)', 'v(3)',
-                                                         'delta(2)', 'delta(3)', 'numerov', 'freq', 'freq h', 'q')
-    print '%12.6f %10.6f %10.6f %10.6f %10.6f %10.6f %10.6f %7.1f %7.1f %4.1f' % (p0, p1, p2, v3,
-                                                                                 delta_2, delta_3,
+    print()
+    print('%12s %10s %10s %10s %10s %10s %10s %7s %7s %4s' % ('p(0)', 'p(1)', 'p(2)', 'v(3)',
+                                                         'delta(2)', 'delta(3)', 'numerov', 'freq', 'freq h', 'q'))
+    print('%12.6f %10.6f %10.6f %10.6f %10.6f %10.6f %10.6f %7.1f %7.1f %4.1f' % (p0, p1, p2, v3,
+                                                                                  delta_2, delta_3,
                                                                                   diff_hz,
                                                                                   transition_frequency,
                                                                                   transition_frequency_harmonic,
-                                                                                  q_max)
+                                                                                  q_max))
 
     plot_file = input_file.replace('.in', '')
 
