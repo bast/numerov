@@ -10,7 +10,6 @@ import sys
 import string
 import os
 import numpy
-#import plot_numerov
 
 from optparse import OptionParser
 
@@ -266,19 +265,3 @@ print '%12.6f %10.6f %10.6f %10.6f %10.6f %10.6f %10.6f %7.1f %7.1f %4.1f' % (p0
                                                                               q_max)
 
 plot_file = string.replace(options.file, '.in', '')
-
-#plot_numerov.plot_numerov(potential_x,
-#                          potential_y,
-#                          potential_coef,
-#                          property_x,
-#                          property_y,
-#                          property_coef,
-#                          q,
-#                          psi_squared,
-#                          energy,
-#                          'Q / a.u.',
-#                          'V(Q) / E~B~h~N~',
-#                          'E~B~PV~N~(Q) / E~B~h~N~',
-#                          plot_file)
-#
-#os.system('convert -trim %s.ps %s.jpg' % (plot_file, plot_file))
