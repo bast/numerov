@@ -7,12 +7,10 @@ def run_numerov(input_data,
                 constants,
                 pot_energy_coefs,
                 exp_value_coefs,
-                q_max):
-
-    q_min = -q_max
+                displacement_range):
 
     n = input_data['num_steps'] + 1
-    step = (q_max - q_min) / input_data['num_steps']
+    step = (displacement_range[1] - displacement_range[0]) / input_data['num_steps']
     step2 = step**2.0
 
     q = numpy.zeros(n)
@@ -24,7 +22,7 @@ def run_numerov(input_data,
     energy = numpy.zeros(input_data['num_solutions'])
 
     for i in range(n):
-        q[i] = q_min + i * step
+        q[i] = displacement_range[0] + i * step
         pot_energies[i] = numpy.polyval(pot_energy_coefs, q[i])
         exp_values[i] = numpy.polyval(exp_value_coefs, q[i])
 
@@ -169,14 +167,14 @@ def main():
 
     transition_frequency = sys.float_info.max
     transition_frequency_previous = -sys.float_info.max
-    q_max = 0.5
+    displacement_range = (-0.5, 0.5)
     while abs(transition_frequency - transition_frequency_previous) > 1.0e-1:
         q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(input_data,
                                                                             constants,
                                                                             pot_energy_coefs,
                                                                             exp_value_coefs,
-                                                                            q_max)
-        q_max += 0.1
+                                                                            displacement_range)
+        displacement_range = (displacement_range[0] - 0.1, displacement_range[1] + 0.1)
         transition_frequency_previous = transition_frequency
 
     # get harmonic frequency from numerov
@@ -184,7 +182,7 @@ def main():
                                                             constants,
                                                             pot_energy_coefs_harmonic,
                                                             exp_value_coefs,
-                                                            q_max)
+                                                            displacement_range)
 
     p0 = exp_value_coefs[-1] * constants['hartree_to_hz']
     p1 = exp_value_coefs[-2] * constants['hartree_to_hz']
@@ -208,7 +206,7 @@ def main():
                                                                                   diff_hz,
                                                                                   transition_frequency,
                                                                                   transition_frequency_harmonic,
-                                                                                  q_max))
+                                                                                  displacement_range[1]))
 
     plot_file = input_file.replace('.in', '')
 
