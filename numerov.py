@@ -11,98 +11,98 @@ def run_numerov(input_data,
 
     q_min = -q_max
 
-    n     = input_data['num_steps'] + 1
-    step  = (q_max - q_min)/input_data['num_steps']
+    n = input_data['num_steps'] + 1
+    step = (q_max - q_min) / input_data['num_steps']
     step2 = step**2.0
 
-    q           = numpy.zeros(n)
-    potential   = numpy.zeros(n)
-    property    = numpy.zeros(n)
-    g           = numpy.zeros(n)
-    psi         = numpy.zeros(n)
+    q = numpy.zeros(n)
+    potential = numpy.zeros(n)
+    property = numpy.zeros(n)
+    g = numpy.zeros(n)
+    psi = numpy.zeros(n)
     psi_squared = numpy.zeros([input_data['num_solutions'], n])
-    energy      = numpy.zeros(input_data['num_solutions'])
+    energy = numpy.zeros(input_data['num_solutions'])
 
     for i in range(n):
-        q[i]         = q_min + i*step
+        q[i] = q_min + i * step
         potential[i] = numpy.polyval(potential_coef, q[i])
-        property[i]  = numpy.polyval(property_coef,  q[i])
+        property[i] = numpy.polyval(property_coef, q[i])
 
-    energy_guess  = 1e-4
-    energy_step   = 1e-4
+    energy_guess = 1e-4
+    energy_step = 1e-4
     nr_nodes_last = 0
 
     expectation_value_reference = 0.0
-    zero_point_energy           = 0.0
+    zero_point_energy = 0.0
 
     while nr_nodes_last < input_data['num_solutions']:
 
-          g = input_data['reduced_mass_amu']*constants['amu_to_au']*2.0*(potential - energy_guess)
+        g = input_data['reduced_mass_amu'] * constants['amu_to_au'] * 2.0 * (potential - energy_guess)
 
-          psi[0]   = 0.0
-          psi[1]   = 1.0e-6
+        psi[0] = 0.0
+        psi[1] = 1.0e-6
 
-          for i in range(n):
-              if i > 1:
-                 psi[i] = (2.0*psi[i-1] - psi[i-2] + g[i-1]*psi[i-1]*step2*5.0/6.0 \
-                        + g[i-2]*psi[i-2]*step2/12.0)/(1.0 - g[i]*step2/12.0)
+        for i in range(n):
+            if i > 1:
+                psi[i] = (2.0 * psi[i - 1] - psi[i - 2] + g[i - 1] * psi[i - 1] * step2 * 5.0 / 6.0 +
+                          g[i - 2] * psi[i - 2] * step2 / 12.0) / (1.0 - g[i] * step2 / 12.0)
 
-          nr_nodes = 0
-          i_save   = n
-          for i in range(n):
-              if i > 1:
-                  if psi[i-1] != 0.0:
-                     if (psi[i]/psi[i-1]) < 0.0:
+        nr_nodes = 0
+        i_save = n
+        for i in range(n):
+            if i > 1:
+                if psi[i - 1] != 0.0:
+                    if (psi[i] / psi[i - 1]) < 0.0:
                         nr_nodes = nr_nodes + 1
                         i_save = i
 
-          psi[i_save+1:] = 0.0
+        psi[i_save + 1:] = 0.0
 
-          psi = psi/numpy.sqrt(numpy.dot(psi, psi))
+        psi = psi / numpy.sqrt(numpy.dot(psi, psi))
 
-          if (abs(energy_step) < input_data['energy_precision']) and (nr_nodes > nr_nodes_last):
+        if (abs(energy_step) < input_data['energy_precision']) and (nr_nodes > nr_nodes_last):
 
-             norm = 0.0
-             done = 0
-             for i in range(len(psi)):
-                 norm = norm + psi[i]*psi[i]
-                 if (norm > 0.001) and not done:
+            norm = 0.0
+            done = 0
+            for i in range(len(psi)):
+                norm = norm + psi[i] * psi[i]
+                if (norm > 0.001) and not done:
                     i_left = i
-                    done   = 1
+                    done = 1
 
-             norm = 0.0
-             done = 0
-             for i in range(n-1, -1, -1):
-                 norm = norm + psi[i]*psi[i]
-                 if (norm > 0.001) and not done:
+            norm = 0.0
+            done = 0
+            for i in range(n - 1, -1, -1):
+                norm = norm + psi[i] * psi[i]
+                if (norm > 0.001) and not done:
                     i_right = i
-                    done    = 1
+                    done = 1
 
-             expectation_value = 2.0*numpy.dot(psi, property*psi)
-             psi_squared[nr_nodes-1] = psi**2.0
+            expectation_value = 2.0 * numpy.dot(psi, property * psi)
+            psi_squared[nr_nodes - 1] = psi**2.0
 
-             energy[nr_nodes-1] = energy_guess
+            energy[nr_nodes - 1] = energy_guess
 
-             if nr_nodes == 1:
+            if nr_nodes == 1:
                 expectation_value_reference = expectation_value
                 zero_point_energy = energy_guess
 
-             transition_frequency = (energy_guess - zero_point_energy)*constants['hartree_to_cm1']
+            transition_frequency = (energy_guess - zero_point_energy) * constants['hartree_to_cm1']
 
-             diff_au = (expectation_value - expectation_value_reference)
-             diff_hz = diff_au*constants['hartree_to_hz']
+            diff_au = (expectation_value - expectation_value_reference)
+            diff_hz = diff_au * constants['hartree_to_hz']
 
-             energy_step   = 1.0e-4
-             nr_nodes_last = nr_nodes_last + 1
+            energy_step = 1.0e-4
+            nr_nodes_last = nr_nodes_last + 1
 
-          if nr_nodes > nr_nodes_last:
-             if energy_step > 0.0:
-                energy_step = energy_step/(-10.0)
-          else:
-             if energy_step < 0.0:
-                energy_step = energy_step/(-10.0)
+        if nr_nodes > nr_nodes_last:
+            if energy_step > 0.0:
+                energy_step = energy_step / (-10.0)
+        else:
+            if energy_step < 0.0:
+                energy_step = energy_step / (-10.0)
 
-          energy_guess = energy_guess + energy_step
+        energy_guess = energy_guess + energy_step
 
     return q, psi_squared, energy, diff_hz, transition_frequency
 
@@ -118,7 +118,6 @@ def main():
         # user has given no arguments: print help and exit
         sys.stderr.write("usage: python numerov.py <input.yml>\n")
         sys.exit(-1)
-
 
     input_file = sys.argv[-1]
     with open(input_file, 'r') as stream:
@@ -140,8 +139,8 @@ def main():
         potential_l.append(x[1])
         property_l.append(x[2])
 
-    potential_x  = numpy.array(q_l[:])
-    potential_y  = numpy.array(potential_l[:])
+    potential_x = numpy.array(q_l[:])
+    potential_y = numpy.array(potential_l[:])
     potential_y -= min(potential_y)
 
     potential_coef = numpy.polyfit(potential_x, potential_y, input_data['degree_potential'])
@@ -196,22 +195,22 @@ def main():
                                                                 property_coef,
                                                                 q_max)
 
-    p0        = property_coef[-1]*constants['hartree_to_hz']
-    p1        = property_coef[-2]*constants['hartree_to_hz']
-    p2        = 2.0*property_coef[-3]*constants['hartree_to_hz']
-    v3        = 6.0*potential_coef[-4]
-    mass      = input_data['reduced_mass_amu']*constants['amu_to_au']
-    frequency = input_data['harmonic_frequency_cm1']/constants['hartree_to_cm1']
+    p0 = property_coef[-1] * constants['hartree_to_hz']
+    p1 = property_coef[-2] * constants['hartree_to_hz']
+    p2 = 2.0 * property_coef[-3] * constants['hartree_to_hz']
+    v3 = 6.0 * potential_coef[-4]
+    mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
+    frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
 
     n = input_data['to_level']
     delta_2 = p2
-    delta_3 = delta_2 - p1*v3/(mass*frequency*frequency)
-    delta_2 *= n/(mass*frequency)
-    delta_3 *= n/(mass*frequency)
+    delta_3 = delta_2 - p1 * v3 / (mass * frequency * frequency)
+    delta_2 *= n / (mass * frequency)
+    delta_3 *= n / (mass * frequency)
 
     print()
     print('%12s %10s %10s %10s %10s %10s %10s %7s %7s %4s' % ('p(0)', 'p(1)', 'p(2)', 'v(3)',
-                                                         'delta(2)', 'delta(3)', 'numerov', 'freq', 'freq h', 'q'))
+                                                              'delta(2)', 'delta(3)', 'numerov', 'freq', 'freq h', 'q'))
     print('%12.6f %10.6f %10.6f %10.6f %10.6f %10.6f %10.6f %7.1f %7.1f %4.1f' % (p0, p1, p2, v3,
                                                                                   delta_2, delta_3,
                                                                                   diff_hz,
