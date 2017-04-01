@@ -1,2 +1,4 @@
 pyyaml
 numpy
+pytest
+pep8
