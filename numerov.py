@@ -193,9 +193,10 @@ def main():
     mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
     frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
 
-    n = input_data['to_level']
     delta_2 = p2
     delta_3 = delta_2 - p1 * v3 / (mass * frequency * frequency)
+
+    n = input_data['to_level']
     delta_2 *= n / (mass * frequency)
     delta_3 *= n / (mass * frequency)
 
