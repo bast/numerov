@@ -8,9 +8,7 @@ from optparse import OptionParser
 
 def run_numerov(options,
                 reduced_mass_amu,
-                amu_to_au,
-                hartree_to_hz,
-                hartree_to_cm1,
+                constants,
                 potential_coef,
                 property_coef,
                 q_max):
@@ -43,7 +41,7 @@ def run_numerov(options,
 
     while nr_nodes_last < options.nr_solutions:
 
-          g = reduced_mass_amu*amu_to_au*2.0*(potential - energy_guess)
+          g = reduced_mass_amu*constants['amu_to_au']*2.0*(potential - energy_guess)
 
           psi[0]   = 0.0
           psi[1]   = 1.0e-6
@@ -93,10 +91,10 @@ def run_numerov(options,
                 expectation_value_reference = expectation_value
                 zero_point_energy = energy_guess
 
-             transition_frequency = (energy_guess - zero_point_energy)*hartree_to_cm1
+             transition_frequency = (energy_guess - zero_point_energy)*constants['hartree_to_cm1']
 
              diff_au = (expectation_value - expectation_value_reference)
-             diff_hz = diff_au*hartree_to_hz
+             diff_hz = diff_au*constants['hartree_to_hz']
 
              energy_step   = 1.0e-4
              nr_nodes_last = nr_nodes_last + 1
@@ -116,10 +114,9 @@ def run_numerov(options,
 def main():
     version = '1.1.0'
 
-    amu_to_au      = 1822.888479031408
-    hartree_to_hz  = 6.579683920721e15
-    hartree_to_cm1 = 2.194746313705e5
-
+    constants = {'amu_to_au': 1822.888479031408,
+                 'hartree_to_hz': 6.579683920721e15,
+                 'hartree_to_cm1': 2.194746313705e5}
 
     usage = '''
       example: ./%prog --file=CHFClBr_mode3_x2c_b3lyp'''
@@ -229,9 +226,7 @@ def main():
     while True:
         q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(options,
                                                                             reduced_mass_amu,
-                                                                            amu_to_au,
-                                                                            hartree_to_hz,
-                                                                            hartree_to_cm1,
+                                                                            constants,
                                                                             potential_coef,
                                                                             property_coef,
                                                                             q_max)
@@ -243,19 +238,17 @@ def main():
     # get harmonic frequency from numerov
     x1, x2, x3, x4, transition_frequency_harmonic = run_numerov(options,
                                                                 reduced_mass_amu,
-                                                                amu_to_au,
-                                                                hartree_to_hz,
-                                                                hartree_to_cm1,
+                                                                constants,
                                                                 potential_coef_harmonic,
                                                                 property_coef,
                                                                 q_max)
 
-    p0        = property_coef[-1]*hartree_to_hz
-    p1        = property_coef[-2]*hartree_to_hz
-    p2        = 2.0*property_coef[-3]*hartree_to_hz
+    p0        = property_coef[-1]*constants['hartree_to_hz']
+    p1        = property_coef[-2]*constants['hartree_to_hz']
+    p2        = 2.0*property_coef[-3]*constants['hartree_to_hz']
     v3        = 6.0*potential_coef[-4]
-    mass      = reduced_mass_amu*amu_to_au
-    frequency = harmonic_frequency_cm1/hartree_to_cm1
+    mass      = reduced_mass_amu*constants['amu_to_au']
+    frequency = harmonic_frequency_cm1/constants['hartree_to_cm1']
 
     n = options.to_level
     delta_2 = p2
