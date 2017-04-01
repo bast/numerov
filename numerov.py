@@ -28,12 +28,12 @@ def run_numerov(input_data,
 
     energy_guess = 1e-4
     energy_step = 1e-4
-    nr_nodes_last = 0
+    num_nodes_last = 0
 
     expectation_value_reference = 0.0
     zero_point_energy = 0.0
 
-    while nr_nodes_last < input_data['num_solutions']:
+    while num_nodes_last < input_data['num_solutions']:
 
         g = input_data['reduced_mass_amu'] * constants['amu_to_au'] * 2.0 * (pot_energies - energy_guess)
 
@@ -48,20 +48,20 @@ def run_numerov(input_data,
                 t3 = 1.0 - g[i] * step2 / 12.0
                 psi[i] = t2 / t3
 
-        nr_nodes = 0
+        num_nodes = 0
         i_save = n
         for i in range(n):
             if i > 1:
                 if psi[i - 1] != 0.0:
                     if (psi[i] / psi[i - 1]) < 0.0:
-                        nr_nodes = nr_nodes + 1
+                        num_nodes = num_nodes + 1
                         i_save = i
 
         psi[i_save + 1:] = 0.0
 
         psi = psi / numpy.sqrt(numpy.dot(psi, psi))
 
-        if (abs(energy_step) < input_data['energy_precision']) and (nr_nodes > nr_nodes_last):
+        if (abs(energy_step) < input_data['energy_precision']) and (num_nodes > num_nodes_last):
 
             norm = 0.0
             done = 0
@@ -80,11 +80,11 @@ def run_numerov(input_data,
                     done = 1
 
             expectation_value = 2.0 * numpy.dot(psi, exp_values * psi)
-            psi_squared[nr_nodes - 1] = psi**2.0
+            psi_squared[num_nodes - 1] = psi**2.0
 
-            energy[nr_nodes - 1] = energy_guess
+            energy[num_nodes - 1] = energy_guess
 
-            if nr_nodes == 1:
+            if num_nodes == 1:
                 expectation_value_reference = expectation_value
                 zero_point_energy = energy_guess
 
@@ -94,9 +94,9 @@ def run_numerov(input_data,
             diff_hz = diff_au * constants['hartree_to_hz']
 
             energy_step = 1.0e-4
-            nr_nodes_last = nr_nodes_last + 1
+            num_nodes_last = num_nodes_last + 1
 
-        if nr_nodes > nr_nodes_last:
+        if num_nodes > num_nodes_last:
             if energy_step > 0.0:
                 energy_step = energy_step / (-10.0)
         else:

@@ -11,7 +11,7 @@ corresponding to a normal mode numerically using the Numerov-Cooley algorithm.
 The script will increase the energy and count the nodes of the wave function.
 If the number of nodes changes and stepsize is below energy_precision, it will
 accept the solution, integrate the property along q and move on to the next
-solution until nr_solutions is reached.  It will also calculate the transition
+solution until num_solutions is reached.  It will also calculate the transition
 frequencies 0 -> n this is useful to check against the harmonic frequencies.
 
 Advice:
