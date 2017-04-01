@@ -7,7 +7,7 @@ from optparse import OptionParser
 
 
 def run_numerov(options,
-                reduced_mass_amu,
+                input_data,
                 constants,
                 potential_coef,
                 property_coef,
@@ -41,7 +41,7 @@ def run_numerov(options,
 
     while nr_nodes_last < options.nr_solutions:
 
-          g = reduced_mass_amu*constants['amu_to_au']*2.0*(potential - energy_guess)
+          g = input_data['reduced_mass_amu']*constants['amu_to_au']*2.0*(potential - energy_guess)
 
           psi[0]   = 0.0
           psi[1]   = 1.0e-6
@@ -159,16 +159,12 @@ def main():
     input_file = sys.argv[-1]
     with open(input_file, 'r') as stream:
         try:
-            f = yaml.load(stream)
+            input_data = yaml.load(stream)
         except yaml.YAMLError as e:
             print(e)
 
-
-    harmonic_frequency_cm1 = f['harmonic_frequency_cm1']
-    reduced_mass_amu = f['reduced_mass_amu']
-
     l = []
-    for step in f['steps']:
+    for step in input_data['steps']:
         l.append((step['displacement'], step['potential'], step['property']))
     l.sort()
 
@@ -207,8 +203,8 @@ def main():
     print
     print 'version            =', version
     print
-    print 'reduced mass       =', reduced_mass_amu
-    print 'harmonic frequency =', harmonic_frequency_cm1
+    print 'reduced mass       =', input_data['reduced_mass_amu']
+    print 'harmonic frequency =', input_data['harmonic_frequency_cm1']
     print 'degree potential   =', options.degree_potential
     print 'degree property    =', options.degree_property
     print 'energy precision   =', options.energy_precision
@@ -220,7 +216,7 @@ def main():
     q_max = 0.5
     while True:
         q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(options,
-                                                                            reduced_mass_amu,
+                                                                            input_data,
                                                                             constants,
                                                                             potential_coef,
                                                                             property_coef,
@@ -232,7 +228,7 @@ def main():
 
     # get harmonic frequency from numerov
     x1, x2, x3, x4, transition_frequency_harmonic = run_numerov(options,
-                                                                reduced_mass_amu,
+                                                                input_data,
                                                                 constants,
                                                                 potential_coef_harmonic,
                                                                 property_coef,
@@ -242,8 +238,8 @@ def main():
     p1        = property_coef[-2]*constants['hartree_to_hz']
     p2        = 2.0*property_coef[-3]*constants['hartree_to_hz']
     v3        = 6.0*potential_coef[-4]
-    mass      = reduced_mass_amu*constants['amu_to_au']
-    frequency = harmonic_frequency_cm1/constants['hartree_to_cm1']
+    mass      = input_data['reduced_mass_amu']*constants['amu_to_au']
+    frequency = input_data['harmonic_frequency_cm1']/constants['hartree_to_cm1']
 
     n = options.to_level
     delta_2 = p2
