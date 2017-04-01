@@ -123,12 +123,6 @@ def main():
 
     parser = OptionParser(usage)
 
-    parser.add_option('--file',
-                      type='string',
-                      action='store',
-                      default=None,
-                      help='File to parse',
-                      metavar='FILE')
     parser.add_option('--degree_potential',
                       type='int',
                       action='store',
@@ -162,7 +156,8 @@ def main():
         sys.exit()
 
 
-    with open(options.file, 'r') as stream:
+    input_file = sys.argv[-1]
+    with open(input_file, 'r') as stream:
         try:
             f = yaml.load(stream)
         except yaml.YAMLError as e:
@@ -266,7 +261,7 @@ def main():
                                                                                   transition_frequency_harmonic,
                                                                                   q_max)
 
-    plot_file = string.replace(options.file, '.in', '')
+    plot_file = string.replace(input_file, '.in', '')
 
 
 if __name__ == '__main__':
