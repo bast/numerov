@@ -5,6 +5,7 @@ hartree_to_hz  = 6.579683920721e15
 hartree_to_cm1 = 2.194746313705e5
 
 
+import yaml
 import sys
 import string
 import os
@@ -62,7 +63,6 @@ if len(sys.argv) == 1:
 l = []
 
 
-import yaml
 
 with open(options.file, 'r') as stream:
     try:
