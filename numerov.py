@@ -6,7 +6,7 @@ import numpy
 def run_numerov(input_data,
                 constants,
                 pot_energy_coefs,
-                property_coef,
+                exp_value_coefs,
                 q_max):
 
     q_min = -q_max
@@ -16,8 +16,8 @@ def run_numerov(input_data,
     step2 = step**2.0
 
     q = numpy.zeros(n)
-    potential = numpy.zeros(n)
-    property = numpy.zeros(n)
+    pot_energies = numpy.zeros(n)
+    exp_values = numpy.zeros(n)
     g = numpy.zeros(n)
     psi = numpy.zeros(n)
     psi_squared = numpy.zeros([input_data['num_solutions'], n])
@@ -25,8 +25,8 @@ def run_numerov(input_data,
 
     for i in range(n):
         q[i] = q_min + i * step
-        potential[i] = numpy.polyval(pot_energy_coefs, q[i])
-        property[i] = numpy.polyval(property_coef, q[i])
+        pot_energies[i] = numpy.polyval(pot_energy_coefs, q[i])
+        exp_values[i] = numpy.polyval(exp_value_coefs, q[i])
 
     energy_guess = 1e-4
     energy_step = 1e-4
@@ -37,7 +37,7 @@ def run_numerov(input_data,
 
     while nr_nodes_last < input_data['num_solutions']:
 
-        g = input_data['reduced_mass_amu'] * constants['amu_to_au'] * 2.0 * (potential - energy_guess)
+        g = input_data['reduced_mass_amu'] * constants['amu_to_au'] * 2.0 * (pot_energies - energy_guess)
 
         psi[0] = 0.0
         psi[1] = 1.0e-6
@@ -81,7 +81,7 @@ def run_numerov(input_data,
                     i_right = i
                     done = 1
 
-            expectation_value = 2.0 * numpy.dot(psi, property * psi)
+            expectation_value = 2.0 * numpy.dot(psi, exp_values * psi)
             psi_squared[nr_nodes - 1] = psi**2.0
 
             energy[nr_nodes - 1] = energy_guess
@@ -131,21 +131,21 @@ def main():
 
     displacements = []
     pot_energies = []
-    properties = []
+    exp_values = []
     for step in input_data['steps']:
         displacements.append(step['displacement'])
         pot_energies.append(step['potential'])
-        properties.append(step['property'])
+        exp_values.append(step['property'])
 
     displacements = numpy.array(displacements)
     pot_energies = numpy.array(pot_energies)
-    properties = numpy.array(properties)
+    exp_values = numpy.array(exp_values)
 
     # shift potential such that minimum is at zero
     pot_energies -= min(pot_energies)
 
     pot_energy_coefs = numpy.polyfit(displacements, pot_energies, input_data['degree_potential'])
-    property_coef = numpy.polyfit(displacements, properties, input_data['degree_property'])
+    exp_value_coefs = numpy.polyfit(displacements, exp_values, input_data['degree_property'])
 
     fourth_lowest_energy = sorted(pot_energies)[3]
     h_x = []
@@ -174,7 +174,7 @@ def main():
         q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(input_data,
                                                                             constants,
                                                                             pot_energy_coefs,
-                                                                            property_coef,
+                                                                            exp_value_coefs,
                                                                             q_max)
         q_max += 0.1
         transition_frequency_previous = transition_frequency
@@ -183,12 +183,12 @@ def main():
     _, _, _, _, transition_frequency_harmonic = run_numerov(input_data,
                                                             constants,
                                                             pot_energy_coefs_harmonic,
-                                                            property_coef,
+                                                            exp_value_coefs,
                                                             q_max)
 
-    p0 = property_coef[-1] * constants['hartree_to_hz']
-    p1 = property_coef[-2] * constants['hartree_to_hz']
-    p2 = 2.0 * property_coef[-3] * constants['hartree_to_hz']
+    p0 = exp_value_coefs[-1] * constants['hartree_to_hz']
+    p1 = exp_value_coefs[-2] * constants['hartree_to_hz']
+    p2 = 2.0 * exp_value_coefs[-3] * constants['hartree_to_hz']
     v3 = 6.0 * pot_energy_coefs[-4]
     mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
     frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
