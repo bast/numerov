@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 version = '1.1.0'
 
 amu_to_au      = 1822.888479031408
