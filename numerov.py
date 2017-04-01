@@ -126,41 +126,31 @@ def main():
         except yaml.YAMLError as e:
             print(e)
 
-    l = []
+    displacements = []
+    pot_energies = []
+    properties = []
     for step in input_data['steps']:
-        l.append((step['displacement'], step['potential'], step['property']))
-    l.sort()
+        displacements.append(step['displacement'])
+        pot_energies.append(step['potential'])
+        properties.append(step['property'])
 
-    q_l = []
-    potential_l = []
-    property_l = []
-    for x in l:
-        q_l.append(x[0])
-        potential_l.append(x[1])
-        property_l.append(x[2])
+    displacements = numpy.array(displacements)
+    pot_energies = numpy.array(pot_energies)
+    properties = numpy.array(properties)
 
-    potential_x = numpy.array(q_l[:])
-    potential_y = numpy.array(potential_l[:])
-    potential_y -= min(potential_y)
+    # shift potential such that minimum is at zero
+    pot_energies -= min(pot_energies)
 
-    potential_coef = numpy.polyfit(potential_x, potential_y, input_data['degree_potential'])
+    potential_coef = numpy.polyfit(displacements, pot_energies, input_data['degree_potential'])
+    property_coef = numpy.polyfit(displacements, properties, input_data['degree_property'])
 
-    property_x = numpy.array(q_l[:])
-    property_y = numpy.array(property_l[:])
-
-    property_coef = numpy.polyfit(property_x, property_y, input_data['degree_property'])
-
-    copy_y = []
-    for y in potential_y:
-        copy_y.append(y)
-    copy_y.sort()
-    fourth_lowest_energy = copy_y[3]
+    fourth_lowest_energy = sorted(pot_energies)[3]
     h_x = []
     h_y = []
-    for i in range(len(potential_x)):
-        if potential_y[i] < fourth_lowest_energy:
-            h_x.append(potential_x[i])
-            h_y.append(potential_y[i])
+    for (displacement, pot_energy) in zip(displacements, pot_energies):
+        if pot_energy < fourth_lowest_energy:
+            h_x.append(displacement)
+            h_y.append(pot_energy)
     potential_coef_harmonic = numpy.polyfit(h_x, h_y, 2)
 
     print()
