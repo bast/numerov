@@ -109,8 +109,6 @@ def run_numerov(input_data,
 
 
 def main():
-    version = '1.1.0'
-
     constants = {'amu_to_au': 1822.888479031408,
                  'hartree_to_hz': 6.579683920721e15,
                  'hartree_to_cm1': 2.194746313705e5}
@@ -154,8 +152,6 @@ def main():
             h_y.append(pot_energy)
     pot_energy_coefs_harmonic = numpy.polyfit(h_x, h_y, 2)
 
-    print()
-    print('version            =', version)
     print()
     print('reduced mass       =', input_data['reduced_mass_amu'])
     print('harmonic frequency =', input_data['harmonic_frequency_cm1'])
