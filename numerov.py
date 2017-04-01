@@ -5,7 +5,7 @@ import numpy
 
 def run_numerov(input_data,
                 constants,
-                potential_coef,
+                pot_energy_coefs,
                 property_coef,
                 q_max):
 
@@ -25,7 +25,7 @@ def run_numerov(input_data,
 
     for i in range(n):
         q[i] = q_min + i * step
-        potential[i] = numpy.polyval(potential_coef, q[i])
+        potential[i] = numpy.polyval(pot_energy_coefs, q[i])
         property[i] = numpy.polyval(property_coef, q[i])
 
     energy_guess = 1e-4
@@ -141,7 +141,7 @@ def main():
     # shift potential such that minimum is at zero
     pot_energies -= min(pot_energies)
 
-    potential_coef = numpy.polyfit(displacements, pot_energies, input_data['degree_potential'])
+    pot_energy_coefs = numpy.polyfit(displacements, pot_energies, input_data['degree_potential'])
     property_coef = numpy.polyfit(displacements, properties, input_data['degree_property'])
 
     fourth_lowest_energy = sorted(pot_energies)[3]
@@ -151,7 +151,7 @@ def main():
         if pot_energy < fourth_lowest_energy:
             h_x.append(displacement)
             h_y.append(pot_energy)
-    potential_coef_harmonic = numpy.polyfit(h_x, h_y, 2)
+    pot_energy_coefs_harmonic = numpy.polyfit(h_x, h_y, 2)
 
     print()
     print('version            =', version)
@@ -170,7 +170,7 @@ def main():
     while True:
         q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(input_data,
                                                                             constants,
-                                                                            potential_coef,
+                                                                            pot_energy_coefs,
                                                                             property_coef,
                                                                             q_max)
         if abs(transition_frequency - transition_frequency_previous) < 1.0e-1:
@@ -181,14 +181,14 @@ def main():
     # get harmonic frequency from numerov
     _, _, _, _, transition_frequency_harmonic = run_numerov(input_data,
                                                             constants,
-                                                            potential_coef_harmonic,
+                                                            pot_energy_coefs_harmonic,
                                                             property_coef,
                                                             q_max)
 
     p0 = property_coef[-1] * constants['hartree_to_hz']
     p1 = property_coef[-2] * constants['hartree_to_hz']
     p2 = 2.0 * property_coef[-3] * constants['hartree_to_hz']
-    v3 = 6.0 * potential_coef[-4]
+    v3 = 6.0 * pot_energy_coefs[-4]
     mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
     frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
 
