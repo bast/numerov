@@ -1,3 +1,9 @@
+degree_potential: 6
+degree_property: 6
+energy_precision: 1.0e-12
+num_solutions: 2
+num_steps: 1000
+to_level: 1
 harmonic_frequency_cm1: 1022.3397
 reduced_mass_amu: 14.3975
 steps:

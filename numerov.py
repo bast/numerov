@@ -3,11 +3,9 @@ import sys
 import string
 import os
 import numpy
-from optparse import OptionParser
 
 
-def run_numerov(options,
-                input_data,
+def run_numerov(input_data,
                 constants,
                 potential_coef,
                 property_coef,
@@ -15,8 +13,8 @@ def run_numerov(options,
 
     q_min = -q_max
 
-    n     = options.nr_steps + 1
-    step  = (q_max - q_min)/options.nr_steps
+    n     = input_data['num_steps'] + 1
+    step  = (q_max - q_min)/input_data['num_steps']
     step2 = step**2.0
 
     q           = numpy.zeros(n)
@@ -24,8 +22,8 @@ def run_numerov(options,
     property    = numpy.zeros(n)
     g           = numpy.zeros(n)
     psi         = numpy.zeros(n)
-    psi_squared = numpy.zeros([options.nr_solutions, n])
-    energy      = numpy.zeros(options.nr_solutions)
+    psi_squared = numpy.zeros([input_data['num_solutions'], n])
+    energy      = numpy.zeros(input_data['num_solutions'])
 
     for i in range(n):
         q[i]         = q_min + i*step
@@ -39,7 +37,7 @@ def run_numerov(options,
     expectation_value_reference = 0.0
     zero_point_energy           = 0.0
 
-    while nr_nodes_last < options.nr_solutions:
+    while nr_nodes_last < input_data['num_solutions']:
 
           g = input_data['reduced_mass_amu']*constants['amu_to_au']*2.0*(potential - energy_guess)
 
@@ -64,7 +62,7 @@ def run_numerov(options,
 
           psi = psi/numpy.sqrt(numpy.dot(psi, psi))
 
-          if (abs(energy_step) < options.energy_precision) and (nr_nodes > nr_nodes_last):
+          if (abs(energy_step) < input_data['energy_precision']) and (nr_nodes > nr_nodes_last):
 
              norm = 0.0
              done = 0
@@ -118,42 +116,10 @@ def main():
                  'hartree_to_hz': 6.579683920721e15,
                  'hartree_to_cm1': 2.194746313705e5}
 
-    usage = '''
-      example: ./%prog --file=CHFClBr_mode3_x2c_b3lyp'''
-
-    parser = OptionParser(usage)
-
-    parser.add_option('--degree_potential',
-                      type='int',
-                      action='store',
-                      default=6)
-    parser.add_option('--degree_property',
-                      type='int',
-                      action='store',
-                      default=6)
-    parser.add_option('--energy_precision',
-                      type='float',
-                      action='store',
-                      default=1.0e-12)
-    parser.add_option('--nr-solutions',
-                      type='int',
-                      action='store',
-                      default=2)
-    parser.add_option('--nr-steps',
-                      type='int',
-                      action='store',
-                      default=1000)
-    parser.add_option('--to-level',
-                      type='int',
-                      action='store',
-                      default=1)
-
-    (options, args) = parser.parse_args()
-
     if len(sys.argv) == 1:
         # user has given no arguments: print help and exit
-        print parser.format_help().strip()
-        sys.exit()
+        sys.stderr.write("usage: python numerov.py <input.yml>\n")
+        sys.exit(-1)
 
 
     input_file = sys.argv[-1]
@@ -180,12 +146,12 @@ def main():
     potential_y  = numpy.array(potential_l[:])
     potential_y -= min(potential_y)
 
-    potential_coef = numpy.polyfit(potential_x, potential_y, options.degree_potential)
+    potential_coef = numpy.polyfit(potential_x, potential_y, input_data['degree_potential'])
 
     property_x = numpy.array(q_l[:])
     property_y = numpy.array(property_l[:])
 
-    property_coef = numpy.polyfit(property_x, property_y, options.degree_property)
+    property_coef = numpy.polyfit(property_x, property_y, input_data['degree_property'])
 
     copy_y = []
     for y in potential_y:
@@ -205,18 +171,17 @@ def main():
     print
     print 'reduced mass       =', input_data['reduced_mass_amu']
     print 'harmonic frequency =', input_data['harmonic_frequency_cm1']
-    print 'degree potential   =', options.degree_potential
-    print 'degree property    =', options.degree_property
-    print 'energy precision   =', options.energy_precision
-    print 'nr solutions       =', options.nr_solutions
-    print 'nr steps           =', options.nr_steps
+    print 'degree potential   =', input_data['degree_potential']
+    print 'degree property    =', input_data['degree_property']
+    print 'energy precision   =', input_data['energy_precision']
+    print 'nr solutions       =', input_data['num_solutions']
+    print 'nr steps           =', input_data['num_steps']
 
     transition_frequency_previous = 0.0
 
     q_max = 0.5
     while True:
-        q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(options,
-                                                                            input_data,
+        q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(input_data,
                                                                             constants,
                                                                             potential_coef,
                                                                             property_coef,
@@ -227,8 +192,7 @@ def main():
         transition_frequency_previous = transition_frequency
 
     # get harmonic frequency from numerov
-    x1, x2, x3, x4, transition_frequency_harmonic = run_numerov(options,
-                                                                input_data,
+    x1, x2, x3, x4, transition_frequency_harmonic = run_numerov(input_data,
                                                                 constants,
                                                                 potential_coef_harmonic,
                                                                 property_coef,
@@ -241,7 +205,7 @@ def main():
     mass      = input_data['reduced_mass_amu']*constants['amu_to_au']
     frequency = input_data['harmonic_frequency_cm1']/constants['hartree_to_cm1']
 
-    n = options.to_level
+    n = input_data['to_level']
     delta_2 = p2
     delta_3 = delta_2 - p1*v3/(mass*frequency*frequency)
     delta_2 *= n/(mass*frequency)
