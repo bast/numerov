@@ -3,7 +3,10 @@
 
 # Numerov
 
-Compute vibrational levels (and wavefunctions) using the Numerov-Cooley algorithm.
+Compute vibrational levels, wavefunctions, and expectation values using the Numerov-Cooley algorithm.
+
+
+## Background
 
 This script will calculate the vibrational levels (and wavefunctions)
 corresponding to a normal mode numerically using the Numerov-Cooley algorithm.
@@ -14,7 +17,8 @@ accept the solution, integrate the property along q and move on to the next
 solution until num_solutions is reached.  It will also calculate the transition
 frequencies 0 -> n this is useful to check against the harmonic frequencies.
 
-Advice:
+
+## Advice
 
 - Energy_precision is often more important than number of grid points.
 - Be careful with the range (q_min and q_max).
