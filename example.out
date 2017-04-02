@@ -4,8 +4,8 @@ harmonic frequency = 1022.3397
 degree potential   = 6
 degree property    = 6
 energy precision   = 1e-12
-nr solutions       = 2
+nr solutions       = 3
 nr steps           = 1000
 
         p(0)       p(1)       p(2)       v(3)   delta(2)   delta(3)    numerov    freq  freq h    q
-  -48.074859  13.568052  40.632517   1.159559   0.332365   0.106378   0.125096  1009.7  1012.0  0.6
+  -48.074859  13.568052  40.632517   1.159559   0.332365   0.106378   0.270378  2017.2  2024.0  0.6
