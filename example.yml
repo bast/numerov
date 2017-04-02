@@ -1,5 +1,5 @@
-degree_potential: 6
-degree_property: 6
+degree_pot_energy: 6
+degree_exp_value: 6
 energy_precision: 1.0e-12
 num_solutions: 3
 num_steps: 1000
@@ -8,35 +8,35 @@ harmonic_frequency_cm1: 1022.3397
 reduced_mass_amu: 14.3975
 steps:
   - displacement: -0.040446965928
-    potential: -17616.7222651
-    property: -7.38477267252e-15
+    pot_energy: -17616.7222651
+    exp_value: -7.38477267252e-15
   - displacement: -0.080893931856
-    potential: -17616.7209787
-    property: -7.45204873198e-15
+    pot_energy: -17616.7209787
+    exp_value: -7.45204873198e-15
   - displacement: -0.121340897785
-    potential: -17616.7189172
-    property: -7.50742595996e-15
+    pot_energy: -17616.7189172
+    exp_value: -7.50742595996e-15
   - displacement: -0.161787863713
-    potential: -17616.7161393
-    property: -7.55002572784e-15
+    pot_energy: -17616.7161393
+    exp_value: -7.55002572784e-15
   - displacement: -0.202234829641
-    potential: -17616.7126987
-    property: -7.57896608976e-15
+    pot_energy: -17616.7126987
+    exp_value: -7.57896608976e-15
   - displacement: 0.0
-    potential: -17616.722711
-    property: -7.30658334569e-15
+    pot_energy: -17616.722711
+    exp_value: -7.30658334569e-15
   - displacement: 0.040446965928
-    potential: -17616.722244
-    property: -7.21819579494e-15
+    pot_energy: -17616.722244
+    exp_value: -7.21819579494e-15
   - displacement: 0.080893931856
-    potential: -17616.7207833
-    property: -7.12055873617e-15
+    pot_energy: -17616.7207833
+    exp_value: -7.12055873617e-15
   - displacement: 0.121340897785
-    potential: -17616.7182408
-    property: -7.01414345803e-15
+    pot_energy: -17616.7182408
+    exp_value: -7.01414345803e-15
   - displacement: 0.161787863713
-    potential: -17616.7145226
-    property: -6.89974774533e-15
+    pot_energy: -17616.7145226
+    exp_value: -6.89974774533e-15
   - displacement: 0.202234829641
-    potential: -17616.7095305
-    property: -6.77813440455e-15
+    pot_energy: -17616.7095305
+    exp_value: -6.77813440455e-15

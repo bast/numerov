@@ -1,8 +1,8 @@
 
 reduced mass       = 14.3975
 harmonic frequency = 1022.3397
-degree potential   = 6
-degree property    = 6
+degree pot_energy   = 6
+degree exp_value    = 6
 energy precision   = 1e-12
 nr solutions       = 3
 nr steps           = 1000

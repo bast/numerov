@@ -33,8 +33,8 @@ def main():
     exp_values = []
     for step in input_data['steps']:
         displacements.append(step['displacement'])
-        pot_energies.append(step['potential'])
-        exp_values.append(step['property'])
+        pot_energies.append(step['pot_energy'])
+        exp_values.append(step['exp_value'])
 
     displacements = numpy.array(displacements)
     pot_energies = numpy.array(pot_energies)
@@ -43,8 +43,8 @@ def main():
     # shift potential such that minimum is at zero
     pot_energies -= min(pot_energies)
 
-    pot_energy_coefs = numpy.polyfit(displacements, pot_energies, input_data['degree_potential'])
-    exp_value_coefs = numpy.polyfit(displacements, exp_values, input_data['degree_property'])
+    pot_energy_coefs = numpy.polyfit(displacements, pot_energies, input_data['degree_pot_energy'])
+    exp_value_coefs = numpy.polyfit(displacements, exp_values, input_data['degree_exp_value'])
 
     fourth_lowest_energy = sorted(pot_energies)[3]
     h_x = []
@@ -58,8 +58,8 @@ def main():
     print()
     print('reduced mass       =', input_data['reduced_mass_amu'])
     print('harmonic frequency =', input_data['harmonic_frequency_cm1'])
-    print('degree potential   =', input_data['degree_potential'])
-    print('degree property    =', input_data['degree_property'])
+    print('degree pot_energy   =', input_data['degree_pot_energy'])
+    print('degree exp_value    =', input_data['degree_exp_value'])
     print('energy precision   =', input_data['energy_precision'])
     print('nr solutions       =', input_data['num_solutions'])
     print('nr steps           =', input_data['num_steps'])
