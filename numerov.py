@@ -175,7 +175,7 @@ def main():
         transition_frequency_previous = transition_frequency
 
     # factor two is hardcoded for PNC difference
-    diff_au = 2.0*(averaged_exp_values_au[input_data['num_solutions'] - 1] - averaged_exp_values_au[0])
+    diff_au = 2.0 * (averaged_exp_values_au[input_data['num_solutions'] - 1] - averaged_exp_values_au[0])
     diff_hz = diff_au * constants['hartree_to_hz']
 
     # get harmonic frequency from numerov
@@ -216,19 +216,11 @@ def main():
 
 
 def test_run_numerov():
-    pot_energy_coefs = numpy.array([-2.45560869e-01,
-                                    -8.88252151e-03,
-                                     1.24439946e-01,
-                                     1.93259856e-01,
-                                     2.78860663e-01,
-                                    -5.62738650e-05,
+    pot_energy_coefs = numpy.array([-2.45560869e-01, -8.88252151e-03,
+                                    1.24439946e-01, 1.93259856e-01, 2.78860663e-01, -5.62738650e-05,
                                     -5.78784571e-08])
-    exp_value_coefs = numpy.array([-1.45680171e-14,
-                                   -2.78094078e-16,
-                                    1.62725432e-15,
-                                   -1.99732822e-15,
-                                    3.08772558e-15,
-                                    2.06211298e-15,
+    exp_value_coefs = numpy.array([-1.45680171e-14, -2.78094078e-16,
+                                   1.62725432e-15, -1.99732822e-15, 3.08772558e-15, 2.06211298e-15,
                                    -7.30656049e-15])
     displacement_range = (-0.5, 0.5)
     num_steps = 21
