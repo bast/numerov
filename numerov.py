@@ -70,11 +70,6 @@ def main():
         displacement_range = (displacement_range[0] - 0.1, displacement_range[1] + 0.1)
         transition_frequency_previous = transition_frequency
 
-    print(yaml.dump(input_data))
-    print('displacement_range:')
-    print('  min: {0}'.format(displacement_range[0]))
-    print('  max: {0}'.format(displacement_range[1]))
-
     # get harmonic frequency from numerov
     # this can be used as a sanity check
     _, _, energies_hartree_harmonic, _ = solve_numerov(pot_energy_coefs_harmonic,
@@ -89,6 +84,10 @@ def main():
     for i in range(len(pot_energy_coefs)):
         pot_energy_coefs[-i - 1] *= math.factorial(i)
 
+    print(yaml.dump(input_data))
+    print('displacement_range:')
+    print('  min: {0}'.format(displacement_range[0]))
+    print('  max: {0}'.format(displacement_range[1]))
     print('exp_value_coefs: {0}'.format(list(exp_value_coefs)))
     print('pot_energy_coefs: {0}'.format(list(pot_energy_coefs)))
     print('energies_hartree: {0}'.format(list(energies_hartree)))
