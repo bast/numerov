@@ -10,13 +10,13 @@ import sys
 import numpy
 
 
-def run_numerov(pot_energy_coefs,
-                exp_value_coefs,
-                displacement_range,
-                num_steps,
-                num_solutions,
-                energy_precision,
-                reduced_mass_au):
+def solve_numerov(pot_energy_coefs,
+                  exp_value_coefs,
+                  displacement_range,
+                  num_steps,
+                  num_solutions,
+                  energy_precision,
+                  reduced_mass_au):
 
     n = num_steps + 1
     step = (displacement_range[1] - displacement_range[0]) / num_steps
@@ -146,13 +146,13 @@ def main():
     transition_frequency_previous = sys.float_info.max
     displacement_range = (-0.5, 0.5)
     while True:
-        q, psi_squared, energies_hartree, averaged_exp_values_au = run_numerov(pot_energy_coefs,
-                                                                               exp_value_coefs,
-                                                                               displacement_range,
-                                                                               input_data['num_steps'],
-                                                                               input_data['num_solutions'],
-                                                                               input_data['energy_precision'],
-                                                                               input_data['reduced_mass_amu'] * constants['amu_to_au'])
+        q, psi_squared, energies_hartree, averaged_exp_values_au = solve_numerov(pot_energy_coefs,
+                                                                                 exp_value_coefs,
+                                                                                 displacement_range,
+                                                                                 input_data['num_steps'],
+                                                                                 input_data['num_solutions'],
+                                                                                 input_data['energy_precision'],
+                                                                                 input_data['reduced_mass_amu'] * constants['amu_to_au'])
         transition_frequency = (energies_hartree[input_data['num_solutions'] - 1] - energies_hartree[0]) * constants['hartree_to_cm1']
         if abs(transition_frequency - transition_frequency_previous) < 1.0e-1:
             break
@@ -164,13 +164,13 @@ def main():
     diff_hz = diff_au * constants['hartree_to_hz']
 
     # get harmonic frequency from numerov
-    _, _, energies_hartree, _ = run_numerov(pot_energy_coefs_harmonic,
-                                            exp_value_coefs,
-                                            displacement_range,
-                                            input_data['num_steps'],
-                                            input_data['num_solutions'],
-                                            input_data['energy_precision'],
-                                            input_data['reduced_mass_amu'] * constants['amu_to_au'])
+    _, _, energies_hartree, _ = solve_numerov(pot_energy_coefs_harmonic,
+                                              exp_value_coefs,
+                                              displacement_range,
+                                              input_data['num_steps'],
+                                              input_data['num_solutions'],
+                                              input_data['energy_precision'],
+                                              input_data['reduced_mass_amu'] * constants['amu_to_au'])
     transition_frequency_harmonic = (energies_hartree[input_data['num_solutions'] - 1] - energies_hartree[0]) * constants['hartree_to_cm1']
 
     p0 = exp_value_coefs[-1] * constants['hartree_to_hz']
@@ -200,7 +200,7 @@ def main():
     plot_file = input_file.replace('.in', '')
 
 
-def test_run_numerov():
+def test_solve_numerov():
     pot_energy_coefs = numpy.array([-2.45560869e-01, -8.88252151e-03,
                                     1.24439946e-01, 1.93259856e-01, 2.78860663e-01, -5.62738650e-05,
                                     -5.78784571e-08])
@@ -212,13 +212,13 @@ def test_run_numerov():
     num_solutions = 3
     energy_precision = 1e-12
     reduced_mass_au = 26245.03
-    q, psi_squared, energies_hartree, averaged_exp_values_au = run_numerov(pot_energy_coefs,
-                                                                           exp_value_coefs,
-                                                                           displacement_range,
-                                                                           num_steps,
-                                                                           num_solutions,
-                                                                           energy_precision,
-                                                                           reduced_mass_au)
+    q, psi_squared, energies_hartree, averaged_exp_values_au = solve_numerov(pot_energy_coefs,
+                                                                             exp_value_coefs,
+                                                                             displacement_range,
+                                                                             num_steps,
+                                                                             num_solutions,
+                                                                             energy_precision,
+                                                                             reduced_mass_au)
 
     q_ref = [-0.5, -0.45238095238095238, -0.40476190476190477,
              -0.35714285714285715, -0.30952380952380953, -0.26190476190476192,
