@@ -45,15 +45,6 @@ def main():
     pot_energy_coefs = numpy.polyfit(displacements, pot_energies, input_data['degree_pot_energy'])
     exp_value_coefs = numpy.polyfit(displacements, exp_values, input_data['degree_exp_value'])
 
-    fourth_lowest_energy = sorted(pot_energies)[3]
-    h_x = []
-    h_y = []
-    for (displacement, pot_energy) in zip(displacements, pot_energies):
-        if pot_energy < fourth_lowest_energy:
-            h_x.append(displacement)
-            h_y.append(pot_energy)
-    pot_energy_coefs_harmonic = numpy.polyfit(h_x, h_y, 2)
-
     transition_frequency_previous = sys.float_info.max
     displacement_range = (-0.5, 0.5)
     while True:
@@ -71,7 +62,16 @@ def main():
         transition_frequency_previous = transition_frequency
 
     # get harmonic frequency from numerov
-    # this can be used as a sanity check
+    # this can be used as a sanity check to verify whether this matches
+    # the provided input frequency
+    fourth_lowest_energy = sorted(pot_energies)[3]
+    h_x = []
+    h_y = []
+    for (displacement, pot_energy) in zip(displacements, pot_energies):
+        if pot_energy < fourth_lowest_energy:
+            h_x.append(displacement)
+            h_y.append(pot_energy)
+    pot_energy_coefs_harmonic = numpy.polyfit(h_x, h_y, 2)
     _, _, energies_hartree_harmonic, _ = solve_numerov(pot_energy_coefs_harmonic,
                                                        exp_value_coefs,
                                                        displacement_range,
