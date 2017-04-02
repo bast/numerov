@@ -75,10 +75,6 @@ def main():
     print('  min: {0}'.format(displacement_range[0]))
     print('  max: {0}'.format(displacement_range[1]))
 
-    # factor two is hardcoded for PNC difference
-    diff_au = 2.0 * (averaged_exp_values_au[input_data['num_solutions'] - 1] - averaged_exp_values_au[0])
-    diff_hz = diff_au * constants['hartree_to_hz']
-
     # get harmonic frequency from numerov
     _, _, energies_hartree_harmonic, _ = solve_numerov(pot_energy_coefs_harmonic,
                                                        exp_value_coefs,
@@ -87,11 +83,8 @@ def main():
                                                        input_data['num_solutions'],
                                                        input_data['energy_precision'],
                                                        input_data['reduced_mass_amu'] * constants['amu_to_au'])
-    transition_frequency_harmonic = (energies_hartree_harmonic[input_data['num_solutions'] - 1] - energies_hartree_harmonic[0]) * constants['hartree_to_cm1']
-
     for i in range(len(exp_value_coefs)):
         exp_value_coefs[-i - 1] *= math.factorial(i)
-
     for i in range(len(pot_energy_coefs)):
         pot_energy_coefs[-i - 1] *= math.factorial(i)
 
@@ -99,14 +92,7 @@ def main():
     print('pot_energy_coefs: {0}'.format(list(pot_energy_coefs)))
     print('energies_hartree: {0}'.format(list(energies_hartree)))
     print('energies_hartree_harmonic: {0}'.format(list(energies_hartree_harmonic)))
-
-    p0 = exp_value_coefs[-1] * constants['hartree_to_hz']
-    p1 = exp_value_coefs[-2] * constants['hartree_to_hz']
-    p2 = exp_value_coefs[-3] * constants['hartree_to_hz']
-    v3 = pot_energy_coefs[-4]
-
-    mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
-    frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
+    print('averaged_exp_values_au: {0}'.format(list(averaged_exp_values_au)))
 
 
 if __name__ == '__main__':
