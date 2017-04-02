@@ -189,7 +189,7 @@ def main():
 
     p0 = exp_value_coefs[-1] * constants['hartree_to_hz']
     p1 = exp_value_coefs[-2] * constants['hartree_to_hz']
-    p2 = 2.0 * exp_value_coefs[-3] * constants['hartree_to_hz']
+    p2 = exp_value_coefs[-3] * constants['hartree_to_hz'] * 2.0
     v3 = 6.0 * pot_energy_coefs[-4]
     mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
     frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
