@@ -36,8 +36,6 @@ def main():
         pot_energies.append(step['pot_energy'])
         exp_values.append(step['exp_value'])
 
-    print(yaml.dump(input_data))
-
     displacements = numpy.array(displacements)
     pot_energies = numpy.array(pot_energies)
     exp_values = numpy.array(exp_values)
@@ -101,6 +99,7 @@ def main():
     delta_2 *= n / (mass * frequency)
     delta_3 *= n / (mass * frequency)
 
+    print(yaml.dump(input_data))
     print()
     print('%12s %10s %10s %10s %10s %10s %10s %7s %7s %4s' % ('p(0)', 'p(1)', 'p(2)', 'v(3)',
                                                               'delta(2)', 'delta(3)', 'numerov', 'freq', 'freq h', 'q'))
