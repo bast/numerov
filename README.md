@@ -8,6 +8,13 @@
 Compute vibrational levels, wavefunctions, and expectation values using the Numerov-Cooley algorithm.
 
 
+## Copyright and license
+
+Copyright 2017 Radovan Bast.
+Use of this source code is governed by a the Mozilla Public License v2.0 that
+can be found in the [LICENSE file](../master/LICENSE).
+
+
 ## Background
 
 This script will calculate the vibrational levels (and wavefunctions)
