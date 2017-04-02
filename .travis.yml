@@ -9,7 +9,6 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - pep8 --ignore=E501 numerov.py
   - pep8 --ignore=E501 _numerov
   - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]];
     then py.test -vv -s _numerov/* --cov _numerov;
