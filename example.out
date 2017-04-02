@@ -19,6 +19,9 @@ steps:
 - {displacement: 0.202234829641, exp_value: -6.77813440455e-15, pot_energy: -17616.7095305}
 to_level: 1
 
+displacement_range:
+  min: -0.6
+  max: 0.6
 
         p(0)       p(1)       p(2)       v(3)   delta(2)   delta(3)    numerov    freq  freq h    q
   -48.074859  13.568052  40.632517   1.159559   0.332365   0.106378   0.125096  1009.7  1012.0  0.6

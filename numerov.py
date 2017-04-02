@@ -22,7 +22,9 @@ def main():
         try:
             input_data = yaml.load(stream)
         except yaml.YAMLError as e:
-            print(e)
+            sys.stderr.write(e)
+            sys.stderr.write("\n")
+            sys.exit(-1)
 
     displacements = []
     pot_energies = []
@@ -96,6 +98,9 @@ def main():
     delta_3 *= n / (mass * frequency)
 
     print(yaml.dump(input_data))
+    print('displacement_range:')
+    print('  min: {0}'.format(displacement_range[0]))
+    print('  max: {0}'.format(displacement_range[1]))
     print()
     print('%12s %10s %10s %10s %10s %10s %10s %7s %7s %4s' % ('p(0)', 'p(1)', 'p(2)', 'v(3)',
                                                               'delta(2)', 'delta(3)', 'numerov', 'freq', 'freq h', 'q'))
