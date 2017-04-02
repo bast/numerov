@@ -55,15 +55,16 @@ def run_numerov(pot_energy_coefs,
                 t3 = 1.0 - g[i] * step2 / 12.0
                 psi[i] = t2 / t3
 
+        # the wave function node will not match the last point
+        # and right of this point there is some numerical leftover
+        # here we cut the leftover away
         num_nodes = 0
         i_save = n
-        for i in range(n):
-            if i > 1:
-                if psi[i - 1] != 0.0:
-                    if (psi[i] / psi[i - 1]) < 0.0:
-                        num_nodes += 1
-                        i_save = i
-
+        for i in range(1, n):
+            if psi[i - 1] != 0.0:
+                if (psi[i] / psi[i - 1]) < 0.0:
+                    num_nodes += 1
+                    i_save = i
         psi[i_save + 1:] = 0.0
 
         psi = psi / numpy.sqrt(numpy.dot(psi, psi))
