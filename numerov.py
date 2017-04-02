@@ -10,14 +10,17 @@ import sys
 import numpy
 
 
-def run_numerov(input_data,
-                constants,
+def run_numerov(constants,
                 pot_energy_coefs,
                 exp_value_coefs,
-                displacement_range):
+                displacement_range,
+                num_steps,
+                num_solutions,
+                energy_precision,
+                reduced_mass_amu):
 
-    n = input_data['num_steps'] + 1
-    step = (displacement_range[1] - displacement_range[0]) / input_data['num_steps']
+    n = num_steps + 1
+    step = (displacement_range[1] - displacement_range[0]) / num_steps
     step2 = step**2.0
 
     q = numpy.zeros(n)
@@ -25,8 +28,8 @@ def run_numerov(input_data,
     exp_values = numpy.zeros(n)
     g = numpy.zeros(n)
     psi = numpy.zeros(n)
-    psi_squared = numpy.zeros([input_data['num_solutions'], n])
-    energy = numpy.zeros(input_data['num_solutions'])
+    psi_squared = numpy.zeros([num_solutions, n])
+    energy = numpy.zeros(num_solutions)
 
     for i in range(n):
         q[i] = displacement_range[0] + i * step
@@ -40,9 +43,9 @@ def run_numerov(input_data,
     expectation_value_reference = 0.0
     zero_point_energy = 0.0
 
-    while num_nodes_last < input_data['num_solutions']:
+    while num_nodes_last < num_solutions:
 
-        g = input_data['reduced_mass_amu'] * constants['amu_to_au'] * 2.0 * (pot_energies - energy_guess)
+        g = reduced_mass_amu * constants['amu_to_au'] * 2.0 * (pot_energies - energy_guess)
 
         psi[0] = 0.0
         psi[1] = 1.0e-6
@@ -68,7 +71,7 @@ def run_numerov(input_data,
 
         psi = psi / numpy.sqrt(numpy.dot(psi, psi))
 
-        if (abs(energy_step) < input_data['energy_precision']) and (num_nodes > num_nodes_last):
+        if (abs(energy_step) < energy_precision) and (num_nodes > num_nodes_last):
 
             norm = 0.0
             done = 0
@@ -172,21 +175,26 @@ def main():
     transition_frequency_previous = -sys.float_info.max
     displacement_range = (-0.5, 0.5)
     while abs(transition_frequency - transition_frequency_previous) > 1.0e-1:
-        q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(input_data,
-                                                                            constants,
+        q, psi_squared, energy, diff_hz, transition_frequency = run_numerov(constants,
                                                                             pot_energy_coefs,
                                                                             exp_value_coefs,
-                                                                            displacement_range)
+                                                                            displacement_range,
+                                                                            input_data['num_steps'],
+                                                                            input_data['num_solutions'],
+                                                                            input_data['energy_precision'],
+                                                                            input_data['reduced_mass_amu'])
         displacement_range = (displacement_range[0] - 0.1, displacement_range[1] + 0.1)
         transition_frequency_previous = transition_frequency
 
     # get harmonic frequency from numerov
-    _, _, _, _, transition_frequency_harmonic = run_numerov(input_data,
-                                                            constants,
+    _, _, _, _, transition_frequency_harmonic = run_numerov(constants,
                                                             pot_energy_coefs_harmonic,
                                                             exp_value_coefs,
-                                                            displacement_range)
-
+                                                            displacement_range,
+                                                            input_data['num_steps'],
+                                                            input_data['num_solutions'],
+                                                            input_data['energy_precision'],
+                                                            input_data['reduced_mass_amu'])
     p0 = exp_value_coefs[-1] * constants['hartree_to_hz']
     p1 = exp_value_coefs[-2] * constants['hartree_to_hz']
     p2 = exp_value_coefs[-3] * constants['hartree_to_hz'] * 2.0
