@@ -20,7 +20,7 @@ def solve_numerov(pot_energy_coefs,
     step = (displacement_range[1] - displacement_range[0]) / num_steps
     step2 = step**2.0
 
-    q = numpy.zeros(n)
+    qs = numpy.zeros(n)
     pot_energies = numpy.zeros(n)
     exp_values = numpy.zeros(n)
     g = numpy.zeros(n)
@@ -30,9 +30,9 @@ def solve_numerov(pot_energy_coefs,
     averaged_exp_values_au = numpy.zeros(num_solutions)
 
     for i in range(n):
-        q[i] = displacement_range[0] + i * step
-        pot_energies[i] = numpy.polyval(pot_energy_coefs, q[i])
-        exp_values[i] = numpy.polyval(exp_value_coefs, q[i])
+        qs[i] = displacement_range[0] + i * step
+        pot_energies[i] = numpy.polyval(pot_energy_coefs, qs[i])
+        exp_values[i] = numpy.polyval(exp_value_coefs, qs[i])
 
     energy_guess = 1e-4
     energy_step = 1e-4
@@ -85,7 +85,7 @@ def solve_numerov(pot_energy_coefs,
 
         energy_guess += energy_step
 
-    return q, psi_squared, energies_hartree, averaged_exp_values_au
+    return qs, psi_squared, energies_hartree, averaged_exp_values_au
 
 
 def test_solve_numerov():

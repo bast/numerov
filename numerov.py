@@ -56,13 +56,13 @@ def main():
     transition_frequency_previous = sys.float_info.max
     displacement_range = (-0.5, 0.5)
     while True:
-        q, psi_squared, energies_hartree, averaged_exp_values_au = solve_numerov(pot_energy_coefs,
-                                                                                 exp_value_coefs,
-                                                                                 displacement_range,
-                                                                                 input_data['num_steps'],
-                                                                                 input_data['num_solutions'],
-                                                                                 input_data['energy_precision'],
-                                                                                 input_data['reduced_mass_amu'] * constants['amu_to_au'])
+        qs, psi_squared, energies_hartree, averaged_exp_values_au = solve_numerov(pot_energy_coefs,
+                                                                                  exp_value_coefs,
+                                                                                  displacement_range,
+                                                                                  input_data['num_steps'],
+                                                                                  input_data['num_solutions'],
+                                                                                  input_data['energy_precision'],
+                                                                                  input_data['reduced_mass_amu'] * constants['amu_to_au'])
         transition_frequency = (energies_hartree[input_data['num_solutions'] - 1] - energies_hartree[0]) * constants['hartree_to_cm1']
         if abs(transition_frequency - transition_frequency_previous) < 1.0e-1:
             break
