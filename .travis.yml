@@ -10,7 +10,15 @@ install:
 
 script:
   - pep8 --ignore=E501 numerov.py
-  - py.test -v -s numerov.py
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]];
+    then py.test -vv -s numerov.py --cov numerov;
+    else py.test -vv -s numerov.py;
+    fi
+
+after_success:
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]];
+    then coveralls;
+    fi
 
 notifications:
   email: false
