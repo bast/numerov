@@ -1,5 +1,0 @@
-#!/bin/bash
-
-python numerov.py example.yml > example.out
-
-exit 0
