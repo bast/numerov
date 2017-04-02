@@ -1,14 +1,9 @@
-# Copyright 2017 Radovan Bast. All rights reserved.
-# Use of this source code is governed by a the Mozilla Public License v2.0 that
-# can be found in the LICENSE file. If a copy of the license was not
-# distributed with this file, you can obtain one at
-# http://mozilla.org/MPL/2.0/.
-
-
 import yaml
 import sys
 import numpy
-from _numerov import solve_numerov, constants
+from .solve import solve_numerov
+from .constants import constants
+from .__init__ import __version__
 import math
 
 
@@ -85,6 +80,7 @@ def main():
         pot_energy_coefs[-i - 1] *= math.factorial(i)
 
     print(yaml.dump(input_data))
+    print('version: {0}'.format(__version__))
     print('displacement_range:')
     print('  min: {0}'.format(displacement_range[0]))
     print('  max: {0}'.format(displacement_range[1]))

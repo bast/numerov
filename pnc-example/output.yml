@@ -18,6 +18,7 @@ steps:
 - {displacement: 0.161787863713, exp_value: -6.89974774533e-15, pot_energy: -17616.7145226}
 - {displacement: 0.202234829641, exp_value: -6.77813440455e-15, pot_energy: -17616.7095305}
 
+version: 0.5.0-alpha
 displacement_range:
   min: -0.6
   max: 0.6

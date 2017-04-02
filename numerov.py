@@ -1,12 +1,20 @@
-# Copyright 2017 Radovan Bast. All rights reserved.
-# Use of this source code is governed by a the Mozilla Public License v2.0 that
-# can be found in the LICENSE file. If a copy of the license was not
-# distributed with this file, you can obtain one at
-# http://mozilla.org/MPL/2.0/.
+"""
+numerov: Compute vibrational levels, wavefunctions, and expectation values using the Numerov-Cooley algorithm.
+"""
 
-
-from _numerov import main
-
+__all__ = [
+    'solve_numerov',
+    '__version__',
+]
 
 if __name__ == '__main__':
-    main()
+    # if run as a script or by 'python -m numerov'
+    # we trigger the below "else" condition by the following import
+    import numerov
+    raise SystemExit(numerov.main())
+
+# else we are imported
+from _numerov.main import main
+from _numerov.solve import solve_numerov
+
+from _numerov import __version__
