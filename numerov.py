@@ -85,10 +85,10 @@ def main():
     transition_frequency_harmonic = (energies_hartree_harmonic[input_data['num_solutions'] - 1] - energies_hartree_harmonic[0]) * constants['hartree_to_cm1']
 
     for i in range(len(exp_value_coefs)):
-        exp_value_coefs[-i-1] *= math.factorial(i)
+        exp_value_coefs[-i - 1] *= math.factorial(i)
 
     for i in range(len(pot_energy_coefs)):
-        pot_energy_coefs[-i-1] *= math.factorial(i)
+        pot_energy_coefs[-i - 1] *= math.factorial(i)
 
     print('exp_value_coefs: {0}'.format(list(exp_value_coefs)))
     print('pot_energy_coefs: {0}'.format(list(pot_energy_coefs)))
