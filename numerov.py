@@ -70,6 +70,11 @@ def main():
         displacement_range = (displacement_range[0] - 0.1, displacement_range[1] + 0.1)
         transition_frequency_previous = transition_frequency
 
+    print(yaml.dump(input_data))
+    print('displacement_range:')
+    print('  min: {0}'.format(displacement_range[0]))
+    print('  max: {0}'.format(displacement_range[1]))
+
     # factor two is hardcoded for PNC difference
     diff_au = 2.0 * (averaged_exp_values_au[input_data['num_solutions'] - 1] - averaged_exp_values_au[0])
     diff_hz = diff_au * constants['hartree_to_hz']
@@ -102,11 +107,6 @@ def main():
 
     mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
     frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
-
-    print(yaml.dump(input_data))
-    print('displacement_range:')
-    print('  min: {0}'.format(displacement_range[0]))
-    print('  max: {0}'.format(displacement_range[1]))
 
 
 if __name__ == '__main__':
