@@ -71,20 +71,18 @@ def run_numerov(pot_energy_coefs,
         if (abs(energy_step) < energy_precision) and (num_nodes > num_nodes_last):
 
             norm = 0.0
-            done = 0
             for i in range(len(psi)):
                 norm += psi[i] * psi[i]
-                if (norm > 0.001) and not done:
+                if norm > 0.001:
                     i_left = i
-                    done = 1
+                    break
 
             norm = 0.0
-            done = 0
             for i in range(n - 1, -1, -1):
                 norm += psi[i] * psi[i]
-                if (norm > 0.001) and not done:
+                if norm > 0.001:
                     i_right = i
-                    done = 1
+                    break
 
             psi_squared[num_nodes - 1] = psi**2.0
             energies_hartree[num_nodes - 1] = energy_guess
