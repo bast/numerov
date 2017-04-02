@@ -8,14 +8,10 @@
 import yaml
 import sys
 import numpy
-from _numerov import solve_numerov
+from _numerov import solve_numerov, constants
 
 
 def main():
-    constants = {'amu_to_au': 1822.888479031408,
-                 'hartree_to_hz': 6.579683920721e15,
-                 'hartree_to_cm1': 2.194746313705e5}
-
     if len(sys.argv) == 1:
         # user has given no arguments: print help and exit
         sys.stderr.write("usage: python numerov.py <input.yml>\n")
