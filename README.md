@@ -23,6 +23,8 @@ by the appropriate version):
 
 - Radovan Bast, Numerov vX.Y.Z, 2017, GitHub repository, https://github.com/bast/numerov.
 
+As soon as the API stabilizes a bit, I will tag a release and attach a DOI to it.
+
 
 ## Example
 
