@@ -76,6 +76,7 @@ def main():
     print('  max: {0}'.format(displacement_range[1]))
 
     # get harmonic frequency from numerov
+    # this can be used as a sanity check
     _, _, energies_hartree_harmonic, _ = solve_numerov(pot_energy_coefs_harmonic,
                                                        exp_value_coefs,
                                                        displacement_range,
