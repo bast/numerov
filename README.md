@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/bast/numerov.svg?branch=master)](https://travis-ci.org/bast/numerov/builds)
-[![Coverage Status](https://coveralls.io/repos/bast/numerov/badge.png?branch=master)](https://coveralls.io/r/bast/numerov?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/bast/numerov/badge.svg?branch=master)](https://coveralls.io/github/bast/numerov?branch=master)
 [![License](https://img.shields.io/badge/license-%20MPL--v2.0-blue.svg)](../master/LICENSE)
 
 
