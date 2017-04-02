@@ -1,0 +1,16 @@
+language:
+  - python
+
+python:
+  - 2.7
+  - 3.6
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - pep8 --ignore=E501 numerov.py
+  - py.test -v -s numerov.py
+
+notifications:
+  email: false
