@@ -10,9 +10,10 @@ install:
 
 script:
   - pep8 --ignore=E501 numerov.py
+  - pep8 --ignore=E501 _numerov
   - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]];
-    then py.test -vv -s numerov.py --cov numerov;
-    else py.test -vv -s numerov.py;
+    then py.test -vv -s _numerov/* --cov _numerov;
+    else py.test -vv -s _numerov/*;
     fi
 
 after_success:
