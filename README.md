@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/bast/numerov.svg?branch=master)](https://travis-ci.org/bast/numerov/builds)
 [![License](https://img.shields.io/badge/license-%20MPL--v2.0-blue.svg)](../master/LICENSE)
 
 
