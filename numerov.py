@@ -36,6 +36,8 @@ def main():
         pot_energies.append(step['pot_energy'])
         exp_values.append(step['exp_value'])
 
+    print(yaml.dump(input_data))
+
     displacements = numpy.array(displacements)
     pot_energies = numpy.array(pot_energies)
     exp_values = numpy.array(exp_values)
@@ -54,15 +56,6 @@ def main():
             h_x.append(displacement)
             h_y.append(pot_energy)
     pot_energy_coefs_harmonic = numpy.polyfit(h_x, h_y, 2)
-
-    print()
-    print('reduced mass       =', input_data['reduced_mass_amu'])
-    print('harmonic frequency =', input_data['harmonic_frequency_cm1'])
-    print('degree pot_energy   =', input_data['degree_pot_energy'])
-    print('degree exp_value    =', input_data['degree_exp_value'])
-    print('energy precision   =', input_data['energy_precision'])
-    print('nr solutions       =', input_data['num_solutions'])
-    print('nr steps           =', input_data['num_steps'])
 
     transition_frequency_previous = sys.float_info.max
     displacement_range = (-0.5, 0.5)
