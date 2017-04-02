@@ -106,8 +106,6 @@ def main():
                                                                                   transition_frequency_harmonic,
                                                                                   displacement_range[1]))
 
-    plot_file = input_file.replace('.in', '')
-
 
 if __name__ == '__main__':
     main()
