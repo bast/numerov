@@ -1,5 +1,5 @@
 """
-numerov: Compute vibrational levels, wavefunctions, and expectation values using the Numerov-Cooley algorithm.
+Numerov: Compute vibrational levels, wavefunctions, and expectation values using the Numerov-Cooley algorithm.
 """
 
 __all__ = [

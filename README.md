@@ -15,6 +15,15 @@ Use of this source code is governed by a the Mozilla Public License v2.0 that
 can be found in the [LICENSE file](../master/LICENSE).
 
 
+## Citation
+
+If you use this tool in a program or publication, please acknowledge its
+author(s) by adding the following reference (please replace vX.Y.Z
+by the appropriate version):
+
+- Radovan Bast, Numerov vX.Y.Z, 2017, GitHub repository, https://github.com/bast/numerov.
+
+
 ## Background
 
 This script will calculate the vibrational levels (and wavefunctions)
