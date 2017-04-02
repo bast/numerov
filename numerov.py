@@ -9,6 +9,7 @@ import yaml
 import sys
 import numpy
 from _numerov import solve_numerov, constants
+import math
 
 
 def main():
@@ -83,10 +84,17 @@ def main():
                                               input_data['reduced_mass_amu'] * constants['amu_to_au'])
     transition_frequency_harmonic = (energies_hartree[input_data['num_solutions'] - 1] - energies_hartree[0]) * constants['hartree_to_cm1']
 
+    for i in range(len(exp_value_coefs)):
+        exp_value_coefs[-i-1] *= math.factorial(i)
+
+    for i in range(len(pot_energy_coefs)):
+        pot_energy_coefs[-i-1] *= math.factorial(i)
+
     p0 = exp_value_coefs[-1] * constants['hartree_to_hz']
     p1 = exp_value_coefs[-2] * constants['hartree_to_hz']
-    p2 = exp_value_coefs[-3] * constants['hartree_to_hz'] * 2.0
-    v3 = 6.0 * pot_energy_coefs[-4]
+    p2 = exp_value_coefs[-3] * constants['hartree_to_hz']
+    v3 = pot_energy_coefs[-4]
+
     mass = input_data['reduced_mass_amu'] * constants['amu_to_au']
     frequency = input_data['harmonic_frequency_cm1'] / constants['hartree_to_cm1']
 
