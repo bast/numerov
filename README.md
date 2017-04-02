@@ -24,6 +24,11 @@ by the appropriate version):
 - Radovan Bast, Numerov vX.Y.Z, 2017, GitHub repository, https://github.com/bast/numerov.
 
 
+## Example
+
+Please have a look [here](../master/pnc-example).
+
+
 ## Background
 
 This script will calculate the vibrational levels (and wavefunctions)
