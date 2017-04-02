@@ -61,7 +61,7 @@ def run_numerov(pot_energy_coefs,
             if i > 1:
                 if psi[i - 1] != 0.0:
                     if (psi[i] / psi[i - 1]) < 0.0:
-                        num_nodes = num_nodes + 1
+                        num_nodes += 1
                         i_save = i
 
         psi[i_save + 1:] = 0.0
@@ -73,7 +73,7 @@ def run_numerov(pot_energy_coefs,
             norm = 0.0
             done = 0
             for i in range(len(psi)):
-                norm = norm + psi[i] * psi[i]
+                norm += psi[i] * psi[i]
                 if (norm > 0.001) and not done:
                     i_left = i
                     done = 1
@@ -81,7 +81,7 @@ def run_numerov(pot_energy_coefs,
             norm = 0.0
             done = 0
             for i in range(n - 1, -1, -1):
-                norm = norm + psi[i] * psi[i]
+                norm += psi[i] * psi[i]
                 if (norm > 0.001) and not done:
                     i_right = i
                     done = 1
@@ -91,16 +91,16 @@ def run_numerov(pot_energy_coefs,
             averaged_exp_values_au[num_nodes - 1] = numpy.dot(psi, exp_values * psi)
 
             energy_step = 1.0e-4
-            num_nodes_last = num_nodes_last + 1
+            num_nodes_last += 1
 
         if num_nodes > num_nodes_last:
             if energy_step > 0.0:
-                energy_step = energy_step / (-10.0)
+                energy_step /= (-10.0)
         else:
             if energy_step < 0.0:
-                energy_step = energy_step / (-10.0)
+                energy_step /= (-10.0)
 
-        energy_guess = energy_guess + energy_step
+        energy_guess += energy_step
 
     return q, psi_squared, energies_hartree, averaged_exp_values_au
 
