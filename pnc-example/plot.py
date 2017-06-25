@@ -16,7 +16,9 @@ def read_data(input_file):
             sys.exit(-1)
 
 
-input_file = sys.argv[-1]
+input_file = sys.argv[-2]
+figure_file = sys.argv[-1]
+
 data = read_data(input_file)
 
 displacements = []
@@ -77,4 +79,6 @@ ax2.set_ylabel('exp', color='r')
 ax2.tick_params('y', colors='r')
 
 fig.tight_layout()
-plt.show()
+
+#plt.show()
+plt.savefig(figure_file, dpi=300.0)
