@@ -63,7 +63,7 @@ def solve_numerov(pot_energy_coefs,
 
         if (abs(energy_step) < energy_precision_hartree) and (num_nodes > num_nodes_last):
             # we have found a solution and we move on to searching the next solution
-            psi_squared[num_nodes - 1] = psi*psi
+            psi_squared[num_nodes - 1] = psi * psi
             energies_hartree[num_nodes - 1] = energy_guess
             averaged_exp_values_au[num_nodes - 1] = numpy.dot(psi, exp_values * psi)
             energy_step = 1.0e-4
