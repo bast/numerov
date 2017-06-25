@@ -52,6 +52,8 @@ def main():
                                                                                   input_data['reduced_mass_amu'] * constants['amu_to_au'])
         transition_frequency = (energies_hartree[input_data['num_solutions'] - 1] - energies_hartree[0]) * constants['hartree_to_cm1']
         if abs(transition_frequency - transition_frequency_previous) < 1.0e-1:
+            qs = numpy.around(qs, decimals=3).tolist()
+            psi_squared = numpy.around(psi_squared, decimals=5).tolist()
             break
         displacement_range = (displacement_range[0] - 0.1, displacement_range[1] + 0.1)
         transition_frequency_previous = transition_frequency
@@ -86,6 +88,9 @@ def main():
     print('  max: {0}'.format(displacement_range[1]))
     print('exp_value_coefs: {0}'.format(list(exp_value_coefs)))
     print('pot_energy_coefs: {0}'.format(list(pot_energy_coefs)))
+    print('pot_energy_coefs_harmonic: {0}'.format(list(pot_energy_coefs_harmonic)))
     print('energies_hartree: {0}'.format(list(energies_hartree)))
     print('energies_hartree_harmonic: {0}'.format(list(energies_hartree_harmonic)))
     print('averaged_exp_values_au: {0}'.format(list(averaged_exp_values_au)))
+    print('qs: {0}'.format(qs))
+    print('psi_squared: {0}'.format(psi_squared))
