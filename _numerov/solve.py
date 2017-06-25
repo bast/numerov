@@ -6,7 +6,7 @@ def solve_numerov(pot_energy_coefs,
                   displacement_range,
                   num_steps,
                   num_solutions,
-                  energy_precision,
+                  energy_precision_hartree,
                   reduced_mass_au):
 
     n = num_steps + 1
@@ -61,7 +61,7 @@ def solve_numerov(pot_energy_coefs,
         # normalize the wave function
         psi = psi / numpy.sqrt(numpy.dot(psi, psi))
 
-        if (abs(energy_step) < energy_precision) and (num_nodes > num_nodes_last):
+        if (abs(energy_step) < energy_precision_hartree) and (num_nodes > num_nodes_last):
             # we have found a solution and we move on to searching the next solution
             psi_squared[num_nodes - 1] = psi**2.0
             energies_hartree[num_nodes - 1] = energy_guess
@@ -91,14 +91,14 @@ def test_solve_numerov():
     displacement_range = (-0.5, 0.5)
     num_steps = 21
     num_solutions = 3
-    energy_precision = 1e-12
+    energy_precision_hartree = 1e-12
     reduced_mass_au = 26245.03
     q, psi_squared, energies_hartree, averaged_exp_values_au = solve_numerov(pot_energy_coefs,
                                                                              exp_value_coefs,
                                                                              displacement_range,
                                                                              num_steps,
                                                                              num_solutions,
-                                                                             energy_precision,
+                                                                             energy_precision_hartree,
                                                                              reduced_mass_au)
 
     q_ref = [-0.5, -0.45238095238095238, -0.40476190476190477,

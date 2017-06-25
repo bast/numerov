@@ -48,7 +48,7 @@ def main():
                                                                                   displacement_range,
                                                                                   input_data['num_steps'],
                                                                                   input_data['num_solutions'],
-                                                                                  input_data['energy_precision'],
+                                                                                  input_data['energy_precision_hartree'],
                                                                                   input_data['reduced_mass_amu'] * constants['amu_to_au'])
         transition_frequency = (energies_hartree[input_data['num_solutions'] - 1] - energies_hartree[0]) * constants['hartree_to_cm1']
         if abs(transition_frequency - transition_frequency_previous) < 1.0e-1:
@@ -74,7 +74,7 @@ def main():
                                                        displacement_range,
                                                        input_data['num_steps'],
                                                        input_data['num_solutions'],
-                                                       input_data['energy_precision'],
+                                                       input_data['energy_precision_hartree'],
                                                        input_data['reduced_mass_amu'] * constants['amu_to_au'])
     for i in range(len(exp_value_coefs)):
         exp_value_coefs[-i - 1] *= math.factorial(i)

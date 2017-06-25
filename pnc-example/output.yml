@@ -1,6 +1,6 @@
 degree_exp_value: 6
 degree_pot_energy: 6
-energy_precision: 1.0e-12
+energy_precision_hartree: 1.0e-12
 harmonic_frequency_cm1: 1022.3397
 num_solutions: 4
 num_steps: 1000
