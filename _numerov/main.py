@@ -26,9 +26,9 @@ def main():
     pot_energies = []
     exp_values = []
     for step in input_data['steps']:
-        displacements.append(step['displacement'])
-        pot_energies.append(step['pot_energy'])
-        exp_values.append(step['exp_value'])
+        displacements.append(step['displacement_au'])
+        pot_energies.append(step['pot_energy_hartree'])
+        exp_values.append(step['exp_value_au'])
 
     displacements = numpy.array(displacements)
     pot_energies = numpy.array(pot_energies)

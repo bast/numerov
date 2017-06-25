@@ -24,9 +24,9 @@ exp_values = []
 pot_energies = []
 
 for x in data['steps']:
-    displacements.append(x['displacement'])
-    exp_values.append(x['exp_value'])
-    pot_energies.append(x['pot_energy'])
+    displacements.append(x['displacement_au'])
+    exp_values.append(x['exp_value_au'])
+    pot_energies.append(x['pot_energy_hartree'])
 
 pot_energies = [p - min(pot_energies) for p in pot_energies]
 
