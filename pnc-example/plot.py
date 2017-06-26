@@ -1,8 +1,9 @@
-import numpy as np
+import numpy
 import matplotlib.pyplot as plt
 import yaml
 import sys
 import math
+import click
 
 
 def read_data(input_file):
@@ -16,69 +17,70 @@ def read_data(input_file):
             sys.exit(-1)
 
 
-input_file = sys.argv[-2]
-figure_file = sys.argv[-1]
-
-data = read_data(input_file)
-
-displacements = []
-exp_values = []
-pot_energies = []
-
-for x in data['steps']:
-    displacements.append(x['displacement_au'])
-    exp_values.append(x['exp_value_au'])
-    pot_energies.append(x['pot_energy_hartree'])
-
-pot_energies = [p - min(pot_energies) for p in pot_energies]
+def get_smooth_curve(x, coefs):
+    x_min = min(x)
+    x_max = max(x)
+    step = (x_max - x_min)/100.0
+    xs = []
+    ys = []
+    q = x_min
+    while q < x_max:
+        q += step
+        xs.append(q)
+        ys.append(numpy.polyval(coefs, q))
+    return xs, ys
 
 
-exp_value_coefs = data['exp_value_coefs']
-for i in range(len(exp_value_coefs)):
-    exp_value_coefs[-i - 1] /= math.factorial(i)
+@click.command()
+@click.option('--force-field', help='File containing force-field data.')
+@click.option('--exp-values', help='File containing expectation values along displacement.')
+@click.option('--numerov-output', help='Output from numerov.')
+@click.option('--img', help='Image file name.')
+def main(force_field, exp_values, numerov_output, img):
 
-pot_energy_coefs = data['pot_energy_coefs']
-for i in range(len(pot_energy_coefs)):
-    pot_energy_coefs[-i - 1] /= math.factorial(i)
+    fig, ax1 = plt.subplots()
+    ax2 = ax1.twinx()
 
-pot_energy_coefs_harmonic = data['pot_energy_coefs_harmonic']
-for i in range(len(pot_energy_coefs_harmonic)):
-    pot_energy_coefs_harmonic[-i - 1] /= math.factorial(i)
+    numerov_data = read_data(numerov_output)
+
+    qs = numerov_data['qs']
+    psi_squared = numerov_data['psi_squared']
+    for i in range(2):
+        ax1.plot(qs, psi_squared[i], 'g-')
+
+    ax1.set_xlabel('displacement')
+    ax1.set_ylabel('pot', color='b')
+    ax1.tick_params('y', colors='b')
+    ax2.set_ylabel('exp', color='r')
+    ax2.tick_params('y', colors='r')
+
+    data = read_data(force_field)
+    x = numpy.array(data['displacements_au'])
+    y = numpy.array(data['energies_hartree'])
+    # shift potential such that minimum is at zero
+    y -= min(y)
+    ax1.plot(x, y, 'bx')
+    coefs = numerov_data['pot_energy_coefs']
+    for i in range(len(coefs)):
+        coefs[-i - 1] /= math.factorial(i)
+    xs, ys = get_smooth_curve(x, coefs)
+    ax1.plot(xs, ys, 'b.')
+
+    data = read_data(exp_values)
+    x = numpy.array(data['displacements_au'])
+    y = numpy.array(data['exp_values_hartree'])
+    ax2.plot(x, y, 'rx')
+    coefs = numerov_data['exp_value_coefs']
+    for i in range(len(coefs)):
+        coefs[-i - 1] /= math.factorial(i)
+    xs, ys = get_smooth_curve(x, coefs)
+    ax2.plot(xs, ys, 'r.')
+
+    fig.tight_layout()
+
+    #plt.show()
+    plt.savefig(img, dpi=300.0)
 
 
-q = min(displacements)
-step = (max(displacements) - min(displacements))/100.0
-qs = []
-es = []
-ps = []
-ps_h = []
-while q < max(displacements):
-    q += step
-    qs.append(q)
-    es.append(np.polyval(exp_value_coefs, q))
-    ps.append(np.polyval(pot_energy_coefs, q))
-    ps_h.append(np.polyval(pot_energy_coefs_harmonic, q))
-
-
-fig, ax1 = plt.subplots()
-
-ax1.plot(displacements, pot_energies, 'bx')
-ax1.plot(qs, ps, 'b.')
-ax1.plot(qs, ps_h, 'b-')
-ax1.set_xlabel('displacement')
-ax1.set_ylabel('pot', color='b')
-ax1.tick_params('y', colors='b')
-
-for i in range(2):
-    ax1.plot(data['qs'], data['psi_squared'][i], 'g-')
-
-ax2 = ax1.twinx()
-ax2.plot(displacements, exp_values, 'rx')
-ax2.plot(qs, es, 'r.')
-ax2.set_ylabel('exp', color='r')
-ax2.tick_params('y', colors='r')
-
-fig.tight_layout()
-
-#plt.show()
-plt.savefig(figure_file, dpi=300.0)
+if __name__ == '__main__':
+    main()
