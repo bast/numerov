@@ -21,9 +21,13 @@ def read_data(input_file):
 
 @click.command()
 @click.option('--general', help='File containing general input.')
+@click.option('--reduced-mass', help='File containing reduced mass data.')
 @click.option('--force-field', help='File containing force-field data.')
 @click.option('--exp-values', help='File containing expectation values along displacement.')
-def main(general, force_field, exp_values):
+def main(general, reduced_mass, force_field, exp_values):
+
+    data = read_data(reduced_mass)
+    reduced_mass_amu = data['reduced_mass_amu']
 
     data = read_data(force_field)
     print(yaml.dump(data))
@@ -39,7 +43,6 @@ def main(general, force_field, exp_values):
         if pot_energy < fourth_lowest_energy:
             h_x.append(displacement)
             h_y.append(pot_energy)
-    reduced_mass_amu = data['reduced_mass_amu']
 
     data = read_data(exp_values)
     print(yaml.dump(data))
