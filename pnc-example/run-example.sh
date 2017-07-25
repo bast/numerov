@@ -1,9 +1,9 @@
 #!/bin/bash
 
-python ../numerov.py --general=general.yml \
-                     --reduced-mass=force.yml \
-                     --force-field=force.yml \
-                     --exp-values=property.yml > numerov-output.yml
+../cooley --general=general.yml \
+          --reduced-mass=force.yml \
+          --force-field=force.yml \
+          --exp-values=property.yml > numerov-output.yml
 
 python pnc.py numerov-output.yml > pnc-output.yml
 

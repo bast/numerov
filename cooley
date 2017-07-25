@@ -1,11 +1,13 @@
+#!/usr/bin/env python
+
 import yaml
 import sys
 import numpy
-from .solve import solve_numerov
-from .constants import constants
-from .__init__ import __version__
 import math
 import click
+import os
+
+from numerov import solve_numerov, constants
 
 
 def read_data(input_file):
@@ -89,7 +91,11 @@ def main(general, reduced_mass, force_field, exp_values):
     for i in range(len(pot_energy_coefs)):
         pot_energy_coefs[-i - 1] *= math.factorial(i)
 
-    print('version: {0}'.format(__version__))
+    _this_path = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(_this_path, 'VERSION'), 'r') as version_file:
+        version = version_file.read().strip()
+
+    print('version: {0}'.format(version))
     print('displacement_range:')
     print('  min: {0}'.format(displacement_range[0]))
     print('  max: {0}'.format(displacement_range[1]))
@@ -101,3 +107,7 @@ def main(general, reduced_mass, force_field, exp_values):
     print('averaged_exp_values_au: {0}'.format(list(averaged_exp_values_au)))
     print('qs: {0}'.format(qs))
     print('psi_squared: {0}'.format(psi_squared))
+
+
+if __name__ == '__main__':
+    main()
