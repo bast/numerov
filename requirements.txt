@@ -1,7 +1,7 @@
 pyyaml
 numpy
+click
 pep8
 pytest
 pytest-cov
 python-coveralls
-click

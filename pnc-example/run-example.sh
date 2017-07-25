@@ -1,9 +1,15 @@
 #!/bin/bash
 
-../cooley --general=general.yml \
-          --reduced-mass=force.yml \
-          --force-field=force.yml \
-          --exp-values=property.yml > numerov-output.yml
+virtualenv --system-site-packages venv
+source venv/bin/activate
+pip install /home/bast/pnc/numerov
+
+source ~/.localrc
+
+cooley --general=general.yml \
+       --reduced-mass=force.yml \
+       --force-field=force.yml \
+       --exp-values=property.yml > numerov-output.yml
 
 python pnc.py numerov-output.yml > pnc-output.yml
 
