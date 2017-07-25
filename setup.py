@@ -16,6 +16,7 @@ setup(
     description=('Compute vibrational levels, wavefunctions, and expectation values using the Numerov-Cooley algorithm.'),
     long_description=long_description,
     author='Radovan Bast',
+    author_email='radovan.bast@uit.no',
     url='https://github.com/bast/numerov',
     license='MPL-2.0',
     packages=['numerov'],
