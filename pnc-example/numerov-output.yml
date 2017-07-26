@@ -19,7 +19,7 @@ exp_values_hartree: [-7.38477267252e-15, -7.45204873198e-15, -7.50742595996e-15,
 energy_precision_hartree: 1e-12
 num_solutions: 4
 num_steps: 1000
-version: 0.5.0-alpha
+version: 0.5.0
 displacement_range:
   min: -0.6
   max: 0.6

@@ -2,9 +2,7 @@
 
 virtualenv --system-site-packages venv
 source venv/bin/activate
-pip install /home/bast/pnc/numerov
-
-source ~/.localrc
+pip install numerov
 
 cooley --general=general.yml \
        --reduced-mass=force.yml \
