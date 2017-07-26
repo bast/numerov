@@ -1,21 +1,32 @@
-[![Build Status](https://travis-ci.org/bast/numerov.svg?branch=master)](https://travis-ci.org/bast/numerov/builds)
-[![Coverage Status](https://coveralls.io/repos/github/bast/numerov/badge.svg?branch=master)](https://coveralls.io/github/bast/numerov?branch=master)
-[![License](https://img.shields.io/badge/license-%20MPL--v2.0-blue.svg)](../master/LICENSE)
 
 
-# Numerov
+Numerov
+=======
 
-Compute vibrational levels, wavefunctions, and expectation values using the Numerov-Cooley algorithm.
+.. image:: https://travis-ci.org/bast/numerov.svg?branch=master
+   :target: https://travis-ci.org/bast/numerov/builds
+
+.. image:: https://coveralls.io/repos/github/bast/numerov/badge.svg?branch=master
+   :target: https://coveralls.io/github/bast/numerov?branch=master
+
+.. image:: https://img.shields.io/badge/license-%20MPL--v2.0-blue.svg
+   :target: https://github.com/bast/numerov/blob/master/LICENSE
+
+Compute vibrational levels, wavefunctions, and expectation values using the
+Numerov-Cooley algorithm.
 
 
-## Copyright and license
+Copyright and license
+---------------------
 
 Copyright 2017 Radovan Bast.
 Use of this source code is governed by a the Mozilla Public License v2.0 that
-can be found in the [LICENSE file](../master/LICENSE).
+can be found in the
+`LICENSE file <https://github.com/bast/numerov/blob/master/LICENSE>`_.
 
 
-## Citation
+Citation
+--------
 
 If you use this tool in a program or publication, please acknowledge its
 author(s) by adding the following reference (please replace vX.Y.Z
@@ -26,26 +37,37 @@ by the appropriate version):
 As soon as the API stabilizes a bit, I will tag a release and attach a DOI to it.
 
 
-## Example
+Installation
+------------
 
-Please have a look [here](../master/pnc-example).
+.. code-block:: bash
+
+   pip install numerov
 
 
-## Background
+Example
+-------
+
+Please have a look `here <https://github.com/bast/numerov/tree/master/pnc-example>`_.
+
+
+Background
+----------
 
 This script will calculate the vibrational levels (and wavefunctions)
 corresponding to a normal mode numerically using the Numerov-Cooley algorithm.
 
 The script will increase the energy and count the nodes of the wave function.
-If the number of nodes changes and stepsize is below `energy_precision_hartree`, it will
+If the number of nodes changes and stepsize is below ``energy_precision_hartree``, it will
 accept the solution, integrate the property along q and move on to the next
-solution until `num_solutions` is reached. It will also calculate the transition
+solution until ``num_solutions`` is reached. It will also calculate the transition
 frequencies 0 -> n, this is useful to check against the harmonic frequencies.
 
 
-## Advice
+Advice
+------
 
-- `energy_precision_hartree` is often more important than number of grid points.
+- ``energy_precision_hartree`` is often more important than number of grid points.
 - Be careful with the displacement range.
 - If the script enters an endless loop probably the reduced mass or the displacement range is wrong.
 - Practice first with the harmonic oscillator.
