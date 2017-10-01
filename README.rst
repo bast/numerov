@@ -12,6 +12,9 @@ Numerov
 .. image:: https://img.shields.io/badge/license-%20MPL--v2.0-blue.svg
    :target: https://github.com/bast/numerov/blob/master/LICENSE
 
+.. image:: https://zenodo.org/badge/86935858.svg
+   :target: https://zenodo.org/badge/latestdoi/86935858
+
 Compute vibrational levels, wavefunctions, and expectation values using the
 Numerov-Cooley algorithm.
 
@@ -29,12 +32,9 @@ Citation
 --------
 
 If you use this tool in a program or publication, please acknowledge its
-author(s) by adding the following reference (please replace vX.Y.Z
-by the appropriate version):
+author(s) by adding the following reference:
 
-- Radovan Bast, Numerov vX.Y.Z, 2017, GitHub repository, https://github.com/bast/numerov.
-
-As soon as the API stabilizes a bit, I will tag a release and attach a DOI to it.
+- Numerov 0.5.0, October 2017, Radovan Bast, UiT The Arctic University of Norway, Norway, https://doi.org/10.5281/zenodo.1000406.
 
 
 Installation
