@@ -78,7 +78,6 @@ def main(force_field, exp_values, numerov_output, img):
 
     fig.tight_layout()
 
-    #plt.show()
     plt.savefig(img, dpi=300.0)
 
 

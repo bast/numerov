@@ -45,10 +45,10 @@ Installation
    pip install numerov
 
 
-Example
--------
+Examples
+--------
 
-Please have a look `here <https://github.com/bast/numerov/tree/master/pnc-example>`_.
+Please have a look `here <https://github.com/bast/numerov/tree/master/examples>`_.
 
 
 Background
