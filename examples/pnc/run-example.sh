@@ -3,6 +3,7 @@
 virtualenv --system-site-packages venv
 source venv/bin/activate
 pip install numerov
+pip install matplotlib
 
 cooley --general=general.yml \
        --reduced-mass=force.yml \
