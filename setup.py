@@ -23,7 +23,7 @@ setup(
     install_requires=[
         'click==6.7',
         'numpy==1.13.1',
-        'pyyaml==3.12',
+        'pyyaml==5.1',
     ],
     scripts=['bin/cooley'],
     include_package_data=True,
