@@ -22,7 +22,7 @@ setup(
     packages=['numerov'],
     install_requires=[
         'click==6.7',
-        'numpy==1.13.1',
+        'numpy==1.21.0',
         'pyyaml==3.12',
     ],
     scripts=['bin/cooley'],
